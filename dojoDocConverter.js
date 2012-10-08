@@ -309,10 +309,10 @@ function Converter() {
                     type = 'HTMLElement';
                     break;
                 case 'function[]':
-                    type = "{(a?:any) : any;}[]";
+                    type = "{(any) : any;}[]";
                     break;
                 case 'function':
-                    type = "(a?:any) => any";
+                    type = "(any) => any";
                     break;
                 case 'regex':
                     type = 'RegExp';
