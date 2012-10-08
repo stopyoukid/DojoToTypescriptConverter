@@ -284,14 +284,11 @@ function Converter() {
     this.getType = function (defType) {
         var type = "any", defTypeToLower;
         if (defType != null && defType.indexOf("|") < 0 && defType.indexOf("__") < 0) {
+            defType = defType.replace(/\./g, "").replace(/\:/g, "");
             if (apiDoc[defType]) {
                 type = defType;
             }
             defTypeToLower = defType.toLowerCase();
-            if (defTypeToLower.indexOf("function") >= 0) {
-                defTypeToLower = "function";
-            }
-
             switch (defTypeToLower) {
                 case 'array':
                 case 'handle[]':
@@ -310,6 +307,9 @@ function Converter() {
                 case 'node':
                 case 'domnode':
                     type = 'HTMLElement';
+                    break;
+                case 'function[]':
+                    type = "{(a?:any) : any;}[]";
                     break;
                 case 'function':
                     type = "(a?:any) => any";
