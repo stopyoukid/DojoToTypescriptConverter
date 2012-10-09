@@ -1,5 +1,5 @@
 #dojo.d.ts
-    This node tool generates a Dojo library file for use with TypesScript, based on a Dojo provided api.json. Current api.json is Dojo 1.6. 
+This node tool generates a Dojo library file for use with TypesScript, based on a Dojo provided api.json. Current api.json is Dojo 1.6. 
 
 ##Prerequisites
 ```
@@ -14,5 +14,6 @@ node dojoDocConverter.js api.json dojo.d.ts
 ```
 
 ##Usage
-```/// <reference path='dojo.d.ts' />
+```
+/// <reference path='dojo.d.ts' />
 ```
