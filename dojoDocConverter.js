@@ -17,6 +17,7 @@ var TSDocumentation = (function () {
         this.summary = summary;
     }
     TSDocumentation.prototype.toString = function () {
+        return "";
         var result = "/**\n";
         var split = this.summary.split("\n");
 
@@ -30,18 +31,17 @@ var TSDocumentation = (function () {
 })();
 var TSProperty = (function (_super) {
     __extends(TSProperty, _super);
-    function TSProperty(name, type, documentation, isModuleProp) {
+    function TSProperty(name, type, documentation) {
         _super.call(this, name, type, documentation);
-        this.isModuleProp = isModuleProp;
     }
-    TSProperty.prototype.toString = function () {
+    TSProperty.prototype.toString = function (isModuleProp) {
         var b = "";
         var docs = this.documentation;
 
         if(docs) {
             b += docs.toString();
         }
-        if(this.isModuleProp) {
+        if(isModuleProp) {
             b += "export var ";
         }
         b += this.name;
@@ -53,21 +53,20 @@ var TSProperty = (function (_super) {
 })(SimpleType);
 var TSFunction = (function (_super) {
     __extends(TSFunction, _super);
-    function TSFunction(name, args, returnType, documentation, isModuleFn, isOverload) {
+    function TSFunction(name, args, returnType, documentation, isOverload) {
         _super.call(this, name, returnType, documentation);
         this.isOverload = isOverload;
-        this.isModuleFn = isModuleFn;
         this.args = args;
         this.returnType = returnType;
     }
-    TSFunction.prototype.toString = function () {
+    TSFunction.prototype.toString = function (isModuleFn) {
         var b = "";
         var docs = this.documentation;
 
         if(docs) {
             b += docs.toString();
         }
-        if(this.isModuleFn) {
+        if(isModuleFn) {
             b += "export function ";
         }
         b += this.name;
@@ -93,6 +92,24 @@ var TSModule = (function () {
         this.properties = properties;
         this.classes = classes;
     }
+    TSModule.INTERFACE_NAMES = [
+        "Object", 
+        "Array", 
+        "navigator", 
+        "console", 
+        "window", 
+        "document"
+    ];
+    TSModule.GLOBAL_MEMBER_FILTER = {
+        "Object": {
+            "toString": true,
+            "hasOwnProperty": true
+        },
+        "Array": {
+            "slice": true,
+            "concat": true
+        }
+    };
     TSModule.prototype.addFunction = function (f) {
         this.functions.push(f);
     };
@@ -120,18 +137,35 @@ var TSModule = (function () {
             this.addClass(classes[i]);
         }
     };
+    TSModule.prototype.isFilteredMember = function (member) {
+        var filters = TSModule.GLOBAL_MEMBER_FILTER[this.name];
+        return filters && filters[member.name];
+    };
     TSModule.prototype.toString = function () {
         var b = "";
         var i;
+        var isInterface = TSModule.INTERFACE_NAMES.indexOf(this.name) >= 0;
+        var member;
+        var func;
 
-        b += "module ";
+        if(isInterface) {
+            b += "interface ";
+        } else {
+            b += "module ";
+        }
         b += this.name;
         b += "{\n";
         for(i = 0; i < this.properties.length; i += 1) {
-            b += this.properties[i].toString();
+            member = this.properties[i];
+            if(!this.isFilteredMember(member)) {
+                b += member.toString(!isInterface);
+            }
         }
         for(i = 0; i < this.functions.length; i += 1) {
-            b += this.functions[i].toString();
+            member = this.functions[i];
+            if(!this.isFilteredMember(member)) {
+                b += this.functions[i].toString(!isInterface);
+            }
         }
         for(i = 0; i < this.classes.length; i += 1) {
             b += this.classes[i].toString();
@@ -150,6 +184,7 @@ var TSClass = (function () {
         this.functions = functions;
         this.properties = properties;
         this.mixins = mixins;
+        this.fullname = fullname;
     }
     TSClass.prototype.addFunction = function (f) {
         this.functions.push(f);
@@ -217,14 +252,14 @@ var TSClass = (function () {
             memberName = this.properties[i].name;
             if(!memberFilters[memberName]) {
                 memberFilters[memberName] = true;
-                b += this.properties[i].toString();
+                b += this.properties[i].toString(false);
             }
         }
         for(i = 0; i < this.functions.length; i += 1) {
             memberName = this.functions[i].name;
             if(!memberFilters[memberName]) {
                 memberFilters[memberName] = true;
-                b += this.functions[i].toString();
+                b += this.functions[i].toString(false);
             }
         }
         if(!propertyAndFunctionsOnly) {
@@ -292,12 +327,12 @@ var Converter = (function () {
 
                 }
                 case 'function[]': {
-                    type = "{(any) : any;}[]";
+                    type = "Function[]";
                     break;
 
                 }
                 case 'function': {
-                    type = "(any) => any";
+                    type = "Function";
                     break;
 
                 }
@@ -332,7 +367,6 @@ var Converter = (function () {
 
                 }
                 case 'string':
-                case 'string.':
                 case 'class':
                 case 'strin':
                 case 'attribute':
@@ -350,7 +384,6 @@ var Converter = (function () {
                 }
                 case 'bool':
                 case 'boolean':
-                case 'boolean.':
                 case 'booleam': {
                     type = 'bool';
                     break;
@@ -490,13 +523,11 @@ var Converter = (function () {
             }
         }
         if(paramDef.usage === "one-or-more") {
-            oneOrMore = [];
-            for(j = 0; j < 10; j += 1) {
-                oneOrMore.push([
-                    "oneOrMore" + j + "?: " + paramType
-                ]);
-            }
-            result.push(oneOrMore);
+            result.push([
+                [
+                    "..." + paramName + j + ": " + paramType + "[]"
+                ]
+            ]);
         }
         return result;
     };
@@ -548,7 +579,7 @@ var Converter = (function () {
                 propDef = propertyDefs[i];
                 name = propDef.name;
                 if(name && name !== 'constructor' && name !== 'class' && name.indexOf && name.indexOf("-") < 0) {
-                    props.push(new TSProperty(name, this.getType(propDef.type), this.convertDocumentation(propDef), isModule));
+                    props.push(new TSProperty(name, this.getType(propDef.type), this.convertDocumentation(propDef)));
                 }
             }
         }
@@ -576,7 +607,7 @@ var Converter = (function () {
                     }
                     parameterSets = this.convertParameters(fnDef.parameters);
                     for(j = 0; j < parameterSets.length; j += 1) {
-                        fns.push(new TSFunction(fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef), isModule));
+                        fns.push(new TSFunction(fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef)));
                     }
                 }
             }

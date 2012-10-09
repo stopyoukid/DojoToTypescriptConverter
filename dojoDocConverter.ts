@@ -22,6 +22,7 @@ class TSDocumentation {
     }
 
     toString() : string {
+        return "";
         var result = "/**\n",
             split = this.summary.split("\n");
         for (var i = 0; i < split.length; i += 1) {
@@ -33,20 +34,17 @@ class TSDocumentation {
 }
 
 class TSProperty extends SimpleType {
-
-    public isModuleProp:bool;
-
-    constructor (name: string, type?: string, documentation?: TSDocumentation, isModuleProp?: bool) {
+    
+    constructor (name: string, type?: string, documentation?: TSDocumentation) {
         super(name, type, documentation);
-        this.isModuleProp = isModuleProp;
     };
 
-    toString() : string {
+    toString(isModuleProp: bool) : string {
         var b = "", docs = this.documentation;
         if (docs) {
             b += docs.toString();
         }
-        if (this.isModuleProp) {
+        if (isModuleProp) {
             b += "export var ";
         }
         b += this.name;
@@ -58,25 +56,23 @@ class TSProperty extends SimpleType {
 
 class TSFunction extends SimpleType {
     public isOverload: bool;
-    public isModuleFn: bool;
     public returnType: string;
     public args: string[];
 
-    constructor (name: string, args: string[], returnType?: string, documentation?: TSDocumentation, isModuleFn?: bool, isOverload?: bool) {
+    constructor (name: string, args: string[], returnType?: string, documentation?: TSDocumentation, isOverload?: bool) {
         super(name, returnType, documentation);
 
         this.isOverload = isOverload;
-        this.isModuleFn = isModuleFn;
         this.args = args;
         this.returnType = returnType;
     };
 
-    toString() : string {
+    toString(isModuleFn: bool) : string {
         var b = "", docs = this.documentation;
         if (docs) {
             b += docs.toString();
         }
-        if (this.isModuleFn) {
+        if (isModuleFn) {
             b += "export function ";
         }
         b += this.name;
@@ -93,6 +89,13 @@ class TSFunction extends SimpleType {
 }
 
 class TSModule {
+
+    // HACK: Some of the modules are defined as interfaces in lib.d.ts
+    static INTERFACE_NAMES = ["Object", "Array", "navigator", "console", "window", "document"];
+
+    // HACK: Some of the interfaces have duplicate members as the ones in lib.d.ts, filter em out
+    static GLOBAL_MEMBER_FILTER = { "Object": { "toString": true, "hasOwnProperty": true }, "Array": {"slice":true , "concat": true }};
+
     public name: string;
     public functions: TSFunction[];
     public properties: TSProperty[];
@@ -137,17 +140,36 @@ class TSModule {
         }
     };
 
+    isFilteredMember(member: { name: string; }) : bool {
+        var filters = TSModule.GLOBAL_MEMBER_FILTER[this.name];
+        return filters && filters[member.name];
+    };
+
     toString () : string {
         var b = "",
-            i;
-        b += "module ";
+            i, 
+            isInterface = TSModule.INTERFACE_NAMES.indexOf(this.name) >= 0,
+            member,
+            func;
+        if (isInterface) {
+            b += "interface ";
+        } else {
+            b += "module ";
+        }
+
         b += this.name;
         b += "{\n";
         for (i = 0; i < this.properties.length; i += 1) {
-            b += this.properties[i].toString();
+            member = this.properties[i];
+            if (!this.isFilteredMember(member)) {
+                b += member.toString(!isInterface);
+            }
         }
         for (i = 0; i < this.functions.length; i += 1) {
-            b += this.functions[i].toString();
+            member = this.functions[i];
+            if (!this.isFilteredMember(member)) {
+                b += this.functions[i].toString(!isInterface);
+            }
         }
         for (i = 0; i < this.classes.length; i += 1) {
             b += this.classes[i].toString();
@@ -162,12 +184,14 @@ class TSClass {
     public functions: TSFunction[];
     public properties: TSProperty[];
     public mixins: TSClass[];
+    public fullname: string;
 
     constructor (name: string, fullname?: string, functions?: TSFunction[] = [], properties?: TSProperty[] = [], mixins?: TSClass[] = []) {
         this.name = name;
         this.functions = functions;
         this.properties = properties;
         this.mixins = mixins;
+        this.fullname = fullname;
     }
 
     addFunction (f: TSFunction) : void {
@@ -233,9 +257,9 @@ class TSClass {
             b += this.name;
 
             // Support only one superclass
-            /*if (mixins && mixins.length > 0) {
-                b += " extends " + mixins[0].fullName + " ";
-                mixins[0].calculateMemberList(memberFilters);
+            /*if (this.mixins && this.mixins.length > 0) {
+                b += " extends " + this.mixins[0].fullname + " ";
+                this.mixins[0].calculateMemberList(memberFilters);
             }*/
 
             b += "{\n";
@@ -251,14 +275,14 @@ class TSClass {
             memberName = this.properties[i].name;
             if (!memberFilters[memberName]) {
                 memberFilters[memberName] = true;
-                b += this.properties[i].toString();
+                b += this.properties[i].toString(false);
             }
         }
         for (i = 0; i < this.functions.length; i += 1) {
             memberName = this.functions[i].name;
             if (!memberFilters[memberName]) {
                 memberFilters[memberName] = true;
-                b += this.functions[i].toString();
+                b += this.functions[i].toString(false);
             }
         }
 
@@ -338,10 +362,10 @@ class Converter {
                     type = 'HTMLElement';
                     break;
                 case 'function[]':
-                    type = "{(any) : any;}[]";
+                    type = "Function[]";
                     break;
                 case 'function':
-                    type = "(any) => any";
+                    type = "Function";
                     break;
                 case 'regex':
                     type = 'RegExp';
@@ -366,7 +390,6 @@ class Converter {
                     type = 'dojo._Url';
                     break;
                 case 'string':
-                case 'string.':
                 case 'class':
                 case 'strin':
                 case 'attribute':
@@ -380,7 +403,6 @@ class Converter {
                     break;
                 case 'bool':
                 case 'boolean':
-                case 'boolean.':
                 case 'booleam':
                     type = 'bool';
                     break;
@@ -492,14 +514,9 @@ class Converter {
             }
         }
 
-        // Add in a whole bunch of optional parameters to handle it,
-        // since typescript doesn't support this ability
+        // If we have one or more, use vargs
         if (paramDef.usage === "one-or-more") {
-            oneOrMore = [];
-            for (j = 0; j < 10; j += 1) {
-                oneOrMore.push(["oneOrMore" + j + "?: " + paramType]);
-            }
-            result.push(oneOrMore);
+            result.push([["..." + paramName + j + ": " + paramType + "[]"]]);
         }
 
         return result;
@@ -549,7 +566,7 @@ class Converter {
                 name = propDef.name;
                 // Some of the docs have properties with dashes in them, filter those out.  
                 if (name && name !== 'constructor' && name !== 'class' && name.indexOf && name.indexOf("-") < 0) {     
-                    props.push(new TSProperty(name, this.getType(propDef.type), this.convertDocumentation(propDef), isModule));
+                    props.push(new TSProperty(name, this.getType(propDef.type), this.convertDocumentation(propDef)));
                 }
             }
         }
@@ -577,7 +594,7 @@ class Converter {
                     // A single function can have multiple different ways to call it, 
                     // we create an overloaded function for every way
                     for (j = 0; j < parameterSets.length; j += 1) {
-                        fns.push(new TSFunction(<string>fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef), isModule));
+                        fns.push(new TSFunction(<string>fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef)));
                     }
 
                     // Add an "overload" definition
