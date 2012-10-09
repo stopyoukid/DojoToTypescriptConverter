@@ -1,327 +1,318 @@
+var __extends = this.__extends || function (d, b) {
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+}
 var fs = require("fs");
+var SimpleType = (function () {
+    function SimpleType(name, type, documentation) {
+        this.name = name;
+        this.type = type;
+        this.documentation = documentation;
+    }
+    return SimpleType;
+})();
+var TSDocumentation = (function () {
+    function TSDocumentation(summary) {
+        this.summary = summary;
+    }
+    TSDocumentation.prototype.toString = function () {
+        var result = "/**\n";
+        var split = this.summary.split("\n");
 
-function Documentation(summary) {
-    this.summary = summary;
-    this.toString = function () {
-        var result = "/**\n",
-            split = summary.split("\n");
-        for (var i = 0; i < split.length; i += 1) {
+        for(var i = 0; i < split.length; i += 1) {
             result += " * " + split[i].replace(/\//g, "\\/") + "\n";
         }
         result += " */\n";
         return result;
     };
-}
-
-function Property(name, type, documentation, isModuleProp) {
-    this.name = name;
-    this.documentation = documentation;
-    this.type = type;
-    this.isModuleProp = isModuleProp;
-    this.toString = function () {
+    return TSDocumentation;
+})();
+var TSProperty = (function (_super) {
+    __extends(TSProperty, _super);
+    function TSProperty(name, type, documentation, isModuleProp) {
+        _super.call(this, name, type, documentation);
+        this.isModuleProp = isModuleProp;
+    }
+    TSProperty.prototype.toString = function () {
         var b = "";
-        if (documentation) {
-            b += documentation.toString();
+        var docs = this.documentation;
+
+        if(docs) {
+            b += docs.toString();
         }
-        if (isModuleProp) {
+        if(this.isModuleProp) {
             b += "export var ";
         }
-        b += name;
-        b += " : " + type;
+        b += this.name;
+        b += " : " + this.type;
         b += ";\n";
         return b;
+    };
+    return TSProperty;
+})(SimpleType);
+var TSFunction = (function (_super) {
+    __extends(TSFunction, _super);
+    function TSFunction(name, args, returnType, documentation, isModuleFn, isOverload) {
+        _super.call(this, name, returnType, documentation);
+        this.isOverload = isOverload;
+        this.isModuleFn = isModuleFn;
+        this.args = args;
+        this.returnType = returnType;
     }
-}
-
-function Function(name, args, returnType, documentation, isModuleFn, isOverload) {
-    this.name = name;
-    this.args = args;
-    this.documentation = documentation;
-    this.returnType = returnType;
-    this.isModuleFn = isModuleFn;
-    this.toString = function() {
+    TSFunction.prototype.toString = function () {
         var b = "";
-        if (documentation) {
-            b += documentation.toString();
+        var docs = this.documentation;
+
+        if(docs) {
+            b += docs.toString();
         }
-        if (isModuleFn) {
+        if(this.isModuleFn) {
             b += "export function ";
         }
-        b += name;
+        b += this.name;
         b += " (";
-        b += args;
+        b += this.args;
         b += ")";
-        b += " : " + returnType;
-        if (isOverload) {
+        b += " : " + this.returnType;
+        if(this.isOverload) {
             b += "{ }";
         }
         b += ";\n";
         return b;
-    }
-}
-
-function Module(name, functions, properties, classes) {
-    var modules;
-    classes = classes || [];
-    properties = properties || [];
-    functions = functions || [];
-
-    this.name = name;
-
-    this.addFunction = function (f) {
-        functions.push(f);
     };
-
-    this.addFunctions = function (fns) {
+    return TSFunction;
+})(SimpleType);
+var TSModule = (function () {
+    function TSModule(name, functions, properties, classes) {
+        if (typeof functions === "undefined") { functions = []; }
+        if (typeof properties === "undefined") { properties = []; }
+        if (typeof classes === "undefined") { classes = []; }
+        this.name = name;
+        this.functions = functions;
+        this.properties = properties;
+        this.classes = classes;
+    }
+    TSModule.prototype.addFunction = function (f) {
+        this.functions.push(f);
+    };
+    TSModule.prototype.addFunctions = function (fns) {
         var i = 0;
-        for (i = 0; i < fns.length; i += 1) {
+        for(i = 0; i < fns.length; i += 1) {
             this.addFunction(fns[i]);
         }
     };
-
-    this.addProperty = function (f) {
-        properties.push(f);
+    TSModule.prototype.addProperty = function (f) {
+        this.properties.push(f);
     };
-
-    this.addProperties = function (props) {
+    TSModule.prototype.addProperties = function (props) {
         var i = 0;
-        for (i = 0; i < props.length; i += 1) {
+        for(i = 0; i < props.length; i += 1) {
             this.addProperty(props[i]);
         }
     };
-
-    this.addClass = function (f) {
-        classes.push(f);
+    TSModule.prototype.addClass = function (f) {
+        this.classes.push(f);
     };
-
-    this.addClasses = function (classes) {
+    TSModule.prototype.addClasses = function (classes) {
         var i = 0;
-        for (i = 0; i < classes.length; i += 1) {
+        for(i = 0; i < classes.length; i += 1) {
             this.addClass(classes[i]);
         }
     };
+    TSModule.prototype.toString = function () {
+        var b = "";
+        var i;
 
-    this.toString = function () {
-        var b = "",
-            i;
         b += "module ";
-        b += name;
+        b += this.name;
         b += "{\n";
-        for (i = 0; i < properties.length; i += 1) {
-            b += properties[i].toString();
+        for(i = 0; i < this.properties.length; i += 1) {
+            b += this.properties[i].toString();
         }
-        for (i = 0; i < functions.length; i += 1) {
-            b += functions[i].toString();
+        for(i = 0; i < this.functions.length; i += 1) {
+            b += this.functions[i].toString();
         }
-        for (i = 0; i < classes.length; i += 1) {
-            b += classes[i].toString();
+        for(i = 0; i < this.classes.length; i += 1) {
+            b += this.classes[i].toString();
         }
         b += "}\n";
         return b;
     };
-}
-
-
-function Class(name, fullName, functions, properties, mixins) {
-    var modules;
-    mixins = mixins || [];
-    properties = properties || [];
-    functions = functions || [];
-
-    this.properties = properties;
-    this.functions = functions;
-
-    this.fullName = fullName;
-    this.name = name;
-
-    this.addFunction = function (f) {
-        functions.push(f);
+    return TSModule;
+})();
+var TSClass = (function () {
+    function TSClass(name, fullname, functions, properties, mixins) {
+        if (typeof functions === "undefined") { functions = []; }
+        if (typeof properties === "undefined") { properties = []; }
+        if (typeof mixins === "undefined") { mixins = []; }
+        this.name = name;
+        this.functions = functions;
+        this.properties = properties;
+        this.mixins = mixins;
+    }
+    TSClass.prototype.addFunction = function (f) {
+        this.functions.push(f);
     };
-
-    this.addFunctions = function (fns) {
+    TSClass.prototype.addFunctions = function (fns) {
         var i = 0;
-        for (i = 0; i < fns.length; i += 1) {
+        for(i = 0; i < fns.length; i += 1) {
             this.addFunction(fns[i]);
         }
     };
-
-    this.addProperty = function (f) {
-        properties.push(f);
+    TSClass.prototype.addProperty = function (f) {
+        this.properties.push(f);
     };
-
-    this.addProperties = function (props) {
+    TSClass.prototype.addProperties = function (props) {
         var i = 0;
-        for (i = 0; i < props.length; i += 1) {
+        for(i = 0; i < props.length; i += 1) {
             this.addProperty(props[i]);
         }
     };
-
-    this.addMixin = function (f) {
-        mixins.push(f);
+    TSClass.prototype.addMixin = function (f) {
+        this.mixins.push(f);
     };
+    TSClass.prototype.calculateMemberList = function (memberMap) {
+        var memberName;
+        var i;
+        var mi;
 
-    this.addClasses = function (mixins) {
-        var i = 0;
-        for (i = 0; i < mixins.length; i += 1) {
-            this.addMixin(mixins[i]);
-        }
-    };
-
-    /**
-     * Calculates the members that belong to this class/superclass
-     */
-    this.calculateMemberList = function(memberMap) {
-        var memberName, i;
-        for (i = 0; i < properties.length; i += 1) {
-            memberName = properties[i].name;
-            if (!memberMap[memberName]) {
+        for(i = 0; i < this.properties.length; i += 1) {
+            memberName = this.properties[i].name;
+            if(!memberMap[memberName]) {
                 memberMap[memberName] = true;
             }
         }
-        for (i = 0; i < functions.length; i += 1) {
-            memberName = functions[i].name;
-            if (!memberMap[memberName]) {
+        for(i = 0; i < this.functions.length; i += 1) {
+            memberName = this.functions[i].name;
+            if(!memberMap[memberName]) {
                 memberMap[memberName] = true;
             }
         }
-
-        // Mixin the other ones
-        for (i = 0; i < mixins.length; i += 1) {
-            mi = mixins[i];
+        for(i = 0; i < this.mixins.length; i += 1) {
+            mi = this.mixins[i];
             mi.calculateMemberList(memberMap);
         }
     };
+    TSClass.prototype.toString = function (propertyAndFunctionsOnly, memberFilters) {
+        if (typeof propertyAndFunctionsOnly === "undefined") { propertyAndFunctionsOnly = false; }
+        if (typeof memberFilters === "undefined") { memberFilters = {
+        }; }
+        var b = "";
+        var i;
+        var j;
+        var memberName;
+        var mi;
 
-    this.toString = function (propertyAndFunctionsOnly, memberFilters) {
-        var b = "",
-            i,
-            j,
-            memberName,
-            mi;
-
-        memberFilters = memberFilters || {};
-
-        if (!propertyAndFunctionsOnly) {
+        if(!propertyAndFunctionsOnly) {
             b += "export class ";
-            b += name;
-
-            // Support only one superclass
-            /*if (mixins && mixins.length > 0) {
-                b += " extends " + mixins[0].fullName + " ";
-                mixins[0].calculateMemberList(memberFilters);
-            }*/
-
+            b += this.name;
             b += "{\n";
         }
-
-        // Mixin the other ones
-        for (i = 0; i < mixins.length; i += 1) {
-            mi = mixins[i];
+        for(i = 0; i < this.mixins.length; i += 1) {
+            mi = this.mixins[i];
             b += mi.toString(true, memberFilters);
         }
-
-        for (i = 0; i < properties.length; i += 1) {
-            memberName = properties[i].name;
-            if (!memberFilters[memberName]) {
+        for(i = 0; i < this.properties.length; i += 1) {
+            memberName = this.properties[i].name;
+            if(!memberFilters[memberName]) {
                 memberFilters[memberName] = true;
-                b += properties[i].toString();
+                b += this.properties[i].toString();
             }
         }
-        for (i = 0; i < functions.length; i += 1) {
-            memberName = functions[i].name;
-            if (!memberFilters[memberName]) {
+        for(i = 0; i < this.functions.length; i += 1) {
+            memberName = this.functions[i].name;
+            if(!memberFilters[memberName]) {
                 memberFilters[memberName] = true;
-                b += functions[i].toString();
+                b += this.functions[i].toString();
             }
         }
-
-        // HACK: for mixins
-        /*for (i = 0; i < mixins.length; i += 1) {
-            miProps = mixins[i].properties;
-            miFuncs = mixins[i].functions;
-
-            if (miProps) {
-                for (j = 0; j < miProps.length; j += 1) {
-                    if (!processedProps[miProps[j].name]) {
-                        b += miProps[j].toString();
-                    }
-                }
-            }
-            if (miFuncs) {
-                for (j = 0; j < miFuncs.length; j += 1) {
-                    if (!processedFunctions[miFuncs[j].name]) {
-                        b += miFuncs[j].toString();
-                    }
-                }
-            }
-            //b += mixins[i].toString(true);
-        }*/
-        if (!propertyAndFunctionsOnly) {
+        if(!propertyAndFunctionsOnly) {
             b += "}\n";
         }
         return b;
     };
-}
+    return TSClass;
+})();
+var Converter = (function () {
+    function Converter() {
+        this.apiDoc = {
+        };
+        this.modules = {
+        };
+        this.classes = {
+        };
+    }
+    Converter.prototype.getParameterName = function (parameter, isOptional) {
+        var name = parameter.name;
+        var usage = parameter.usage;
 
-function Converter() {
-    var apiDoc, modules = {}, classes = {};
-    
-    /**
-     * Gets a parameter name from a parameter definition
-     */
-    this.getParameterName = function (parameter, isOptional) {
-        var name = parameter.name,
-			usage = parameter.usage;
-        if (isOptional) {
+        if(isOptional) {
             name += "?";
         }
         return name;
     };
+    Converter.prototype.getType = function (defType) {
+        var type = "any";
+        var defTypeToLower;
 
-    /**
-     * Gets the typescript type for the api doc type
-     */
-    this.getType = function (defType) {
-        var type = "any", defTypeToLower;
-        if (defType != null && defType.indexOf("|") < 0 && defType.indexOf("__") < 0) {
+        if(defType != null && defType.indexOf("|") < 0 && defType.indexOf("__") < 0) {
             defType = defType.replace(/\./g, "").replace(/\:/g, "");
-            if (apiDoc[defType]) {
+            if(this.apiDoc[defType]) {
                 type = defType;
             }
             defTypeToLower = defType.toLowerCase();
-            switch (defTypeToLower) {
+            switch(defTypeToLower) {
                 case 'array':
-                case 'handle[]':
+                case 'handle[]': {
                     type = 'any[]';
                     break;
-                case 'arguments':
+
+                }
+                case 'arguments': {
                     type = 'IArguments';
                     break;
-                case 'domnode[]':
+
+                }
+                case 'domnode[]': {
                     type = 'HTMLElement[]';
                     break;
-                case 'domevent':
+
+                }
+                case 'domevent': {
                     type = 'Event';
                     break;
+
+                }
                 case 'dom':
                 case 'node':
-                case 'domnode':
+                case 'domnode': {
                     type = 'HTMLElement';
                     break;
-                case 'function[]':
+
+                }
+                case 'function[]': {
                     type = "{(any) : any;}[]";
                     break;
-                case 'function':
+
+                }
+                case 'function': {
                     type = "(any) => any";
                     break;
-                case 'regex':
+
+                }
+                case 'regex': {
                     type = 'RegExp';
                     break;
+
+                }
                 case 'documentelement':
                 case 'documentnode':
-                case 'mdocumentelement':
+                case 'mdocumentelement': {
                     type = 'HTMLDocument';
                     break;
+
+                }
                 case 'number':
                 case 'decimal':
                 case 'integer':
@@ -329,131 +320,167 @@ function Converter() {
                 case 'float':
                 case 'read-only-number':
                 case 'integer/float':
-                case '-1':
+                case '-1': {
                     type = 'number';
                     break;
+
+                }
                 case 'uri':
-                case 'dojo.uri.uri':
+                case 'dojo.uri.uri': {
                     type = 'dojo._Url';
                     break;
+
+                }
                 case 'string':
                 case 'string.':
                 case 'class':
                 case 'strin':
                 case 'attribute':
                 case 'html':
-                case 'channel/resource':
+                case 'channel/resource': {
                     type = 'String';
                     break;
+
+                }
                 case 'deferred':
-                case '\'deferred\'':
+                case '\'deferred\'': {
                     type = 'dojo.Deferred';
                     break;
+
+                }
                 case 'bool':
                 case 'boolean':
                 case 'boolean.':
-                case 'booleam':
+                case 'booleam': {
                     type = 'bool';
                     break;
-                case 'widget':
+
+                }
+                case 'widget': {
                     type = 'dijit._Widget';
                     break;
-                case 'widget(dijit.menu)':
+
+                }
+                case 'widget(dijit.menu)': {
                     type = 'dijit.Menu';
                     break;
-                case 'item[][]':
-                    //type = 'dojo.data.Item[][]';
+
+                }
+                case 'item[][]': {
                     type = "any";
                     break;
-                case 'item[]':
-                    //type = 'dojo.data.Item[]';
+
+                }
+                case 'item[]': {
                     type = "any";
                     break;
-                case 'item':
-                    //type = 'dojo.data.Item';
+
+                }
+                case 'item': {
                     type = "any";
                     break;
-                case 'mouse':
+
+                }
+                case 'mouse': {
                     type = 'MouseEvent';
                     break;
-                case 'key':
+
+                }
+                case 'key': {
                     type = 'KeyboardEvent';
                     break;
+
+                }
                 case '_tree.node':
-                case 'treenode':
+                case 'treenode': {
                     type = 'dijit._TreeNode';
                     break;
-                case 'time':
+
+                }
+                case 'time': {
                     type = 'Date';
                     break;
-                case 'nodelist':
+
+                }
+                case 'nodelist': {
                     type = 'dojo.NodeList';
                     break;
-                case 'array[dojox.grid.__celldef[]]':
+
+                }
+                case 'array[dojox.grid.__celldef[]]': {
                     type = 'dojox.grid.__CellDef[]';
                     break;
-                case 'array[widgets]':
+
+                }
+                case 'array[widgets]': {
                     type = "dijit._Widget[]";
                     break;
+
+                }
             }
         }
         return type;
     };
-
-    this.isModule = function (definition) {
+    Converter.prototype.isModule = function (definition) {
         return definition && !definition.type && !this.isClass(definition);
     };
-
-    this.isClass = function (definition) {
-        return definition && definition.classlike;
+    Converter.prototype.isClass = function (definition) {
+        return !!(definition && definition.classlike);
     };
+    Converter.prototype.isSubClass = function (definition) {
+        var i;
+        var location = definition.location;
+        var namespaceClassParts = location.split(".");
+        var soFar = "";
 
-    this.isSubClass = function (definition) {
-        var location = definition.location, namespaceClassParts = location.split("."), soFar = "";
-        for (i = 0; i < namespaceClassParts.length - 1; i += 1) {
+        for(i = 0; i < namespaceClassParts.length - 1; i += 1) {
             soFar += (i > 0 ? "." : "") + namespaceClassParts[i];
-            if (this.isClass(apiDoc[soFar])) {
+            if(this.isClass(this.apiDoc[soFar])) {
                 return true;
             }
         }
         return false;
     };
-
-    this.getModule = function (name) {
-        var module = modules[name] = modules[name] || new Module(name);
-        return module;
+    Converter.prototype.getModule = function (name) {
+        var m = this.modules[name] = this.modules[name] || new TSModule(name);
+        return m;
     };
+    Converter.prototype.getParameterTypeSets = function (parameterDefinitions, i, forceOptional) {
+        if (typeof i === "undefined") { i = 0; }
+        var result = [];
+        var paramDef;
+        var paramTypes;
+        var paramType;
+        var subparameterSets = [];
+        var j;
+        var k;
+        var paramName;
+        var newParam;
+        var typeMap = {
+        };
+        var oneOrMore;
 
-
-    /**
-     * Expands the parameter definition into unique sets of parameters
-     * cause some parameters can be multiple types
-     */
-    this.getParameterTypeSets = function (parameterDefinitions, i, forceOptional) {
-        var result = [], paramDef, paramTypes, paramType, subparameterSets = [], j, k, paramName, newParam, typeMap = {}, oneOrMore;
         i = i || 0;
         paramDef = parameterDefinitions[i];
         forceOptional = forceOptional || paramDef.usage === "optional";
-
         paramName = this.getParameterName(paramDef, forceOptional);
-        paramTypes = paramDef.type ? paramDef.type.replace("(", "").replace(")", "").split("|") : ["any"];
-
-        // If there are more parameters after this one
-        if (i < parameterDefinitions.length - 1) {
+        paramTypes = paramDef.type ? paramDef.type.replace("(", "").replace(")", "").split("|") : [
+            "any"
+        ];
+        if(i < parameterDefinitions.length - 1) {
             subparameterSets = this.getParameterTypeSets(parameterDefinitions, i + 1, forceOptional);
         }
-
-        for (j = 0; j < paramTypes.length; j += 1) {
+        for(j = 0; j < paramTypes.length; j += 1) {
             paramType = paramTypes[j];
-            if (paramType) {
+            if(paramType) {
                 paramType = this.getType(paramType);
-                // This prevents multiple types that resolve to the same type so any,any
-                if (!typeMap[paramType]) {
+                if(!typeMap[paramType]) {
                     typeMap[paramType] = true;
-                    newParam = [paramName + ": " + paramType];
-
-                    if (subparameterSets && subparameterSets.length > 0) {
-                        for (k = 0; k < subparameterSets.length; k += 1) {
+                    newParam = [
+                        paramName + ": " + paramType
+                    ];
+                    if(subparameterSets && subparameterSets.length > 0) {
+                        for(k = 0; k < subparameterSets.length; k += 1) {
                             result.push(newParam.concat(subparameterSets[k]));
                         }
                     } else {
@@ -462,185 +489,168 @@ function Converter() {
                 }
             }
         }
-
-        // Add in a whole bunch of optional parameters to handle it,
-        // since typescript doesn't support this ability
-        if (paramDef.usage === "one-or-more") {
+        if(paramDef.usage === "one-or-more") {
             oneOrMore = [];
-            for (j = 0; j < 10; j += 1) {
-                oneOrMore.push(["oneOrMore" + j + "?: " + paramType]);
+            for(j = 0; j < 10; j += 1) {
+                oneOrMore.push([
+                    "oneOrMore" + j + "?: " + paramType
+                ]);
             }
             result.push(oneOrMore);
         }
-
         return result;
-    },
+    };
+    Converter.prototype.processMixins = function () {
+        var i;
+        var j;
+        var cls;
+        var definition;
+        var mis;
+        var mi;
 
-    this.processMixins = function () {
-        var i, j, cls, definition, mis, mi;
-        for (i in classes) {
-            cls = classes[i];
-            definition = apiDoc[i];
-            if (definition.mixins) {
+        for(i in this.classes) {
+            cls = this.classes[i];
+            definition = this.apiDoc[i];
+            if(definition.mixins) {
                 mis = definition.mixins && definition.mixins["instance"];
-                for (j = 0; j < mis.length; j += 1) {
-                    mi = classes[mis[j].location];
-                    if (mi) {
+                for(j = 0; j < mis.length; j += 1) {
+                    mi = this.classes[mis[j].location];
+                    if(mi) {
                         cls.addMixin(mi);
                     }
                 }
             }
         }
     };
-
-    this.convertParameters = function (parameterDefinitions) {
+    Converter.prototype.convertParameters = function (parameterDefinitions) {
         var result = [];
-
-        if (parameterDefinitions) {
+        if(parameterDefinitions) {
             result = this.getParameterTypeSets(parameterDefinitions);
         } else {
             result.push([]);
         }
-
         return result;
     };
-
-    this.convertDocumentation = function (definition) {
+    Converter.prototype.convertDocumentation = function (definition) {
         var summary = definition.summary;
-        if (summary) {
-            return new Documentation(summary);
+        if(summary) {
+            return new TSDocumentation(summary);
         }
     };
+    Converter.prototype.convertProperties = function (propertyDefs, isModule) {
+        var i;
+        var propDef;
+        var props = [];
+        var name;
 
-    this.convertProperties = function (propertyDefs, isModule) {
-        var i, propDef, props = [], name;
-        if (propertyDefs) {
-            for (i = 0; i < propertyDefs.length; i += 1) {
+        if(propertyDefs) {
+            for(i = 0; i < propertyDefs.length; i += 1) {
                 propDef = propertyDefs[i];
                 name = propDef.name;
-                // Some of the docs have properties with dashes in them, filter those out.  
-                if (name && name !== 'constructor' && name !== 'class' && name.indexOf && name.indexOf("-") < 0) {     
-                    props.push(new Property(name, this.getType(propDef.type), this.convertDocumentation(propDef), isModule));
+                if(name && name !== 'constructor' && name !== 'class' && name.indexOf && name.indexOf("-") < 0) {
+                    props.push(new TSProperty(name, this.getType(propDef.type), this.convertDocumentation(propDef), isModule));
                 }
             }
         }
         return props;
     };
+    Converter.prototype.convertFunctions = function (functionDefs, isModule) {
+        var i;
+        var fnDef;
+        var fns = [];
+        var parameterSets;
+        var j;
+        var returnType;
+        var returnTypes;
+        var name;
 
-    this.convertFunctions = function (functionDefs, isModule) {
-        var i, fnDef, fns = [], parameterSets, j, returnType, returnTypes, name;
-        if (functionDefs) {
-            for (i = 0; i < functionDefs.length; i += 1) {
+        if(functionDefs) {
+            for(i = 0; i < functionDefs.length; i += 1) {
                 fnDef = functionDefs[i];
                 name = fnDef.name;
-                if (name && name !== 'constructor' && name.indexOf && name.indexOf("-") < 0) {
-                    // Functions in dojo can have more than one return type
-                    // so if there is more than one, just use "any" as the ts return type
-                    // we can't use void, cause sometimes they don't list the return types of the functions correctly
+                if(name && name !== 'constructor' && name.indexOf && name.indexOf("-") < 0) {
                     returnTypes = fnDef["return-types"];
                     returnType = "any";
-                    if (returnTypes && returnTypes.length === 1) {
+                    if(returnTypes && returnTypes.length === 1) {
                         returnType = this.getType(returnTypes[0].type);
                     }
-
                     parameterSets = this.convertParameters(fnDef.parameters);
-
-                    // A single function can have multiple different ways to call it, 
-                    // we create an overloaded function for every way
-                    for (j = 0; j < parameterSets.length; j += 1) {
-                        fns.push(new Function(fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef), isModule));
+                    for(j = 0; j < parameterSets.length; j += 1) {
+                        fns.push(new TSFunction(fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef), isModule));
                     }
-
-                    // Add an "overload" definition
-                    //fns.push(new Function(fnDef.name, ["a?:any"], "any", this.convertDocumentation(fnDef), isModule, true));
                 }
             }
         }
         return fns;
     };
-
-    this.convertModule = function(name, definition) {
-        var m, i, provide, provideDef;
-        if (definition) {
+    Converter.prototype.convertModule = function (name, definition) {
+        var m;
+        if(definition) {
             m = this.getModule(name);
             m.addFunctions(this.convertFunctions(definition.methods, true));
             m.addProperties(this.convertProperties(definition.properties, true));
         }
-
         return m;
     };
-
-    this.convertModules = function (roots) {
+    Converter.prototype.convertModules = function (roots) {
         var i;
-        for (i in apiDoc) {
-            definition = apiDoc[i];
-            if (this.isModule(definition) && !this.isSubClass(definition)) {
+        var definition;
+
+        for(i in this.apiDoc) {
+            definition = this.apiDoc[i];
+            if(this.isModule(definition) && !this.isSubClass(definition)) {
                 this.convertModule(i, definition);
             }
         }
     };
-
-    this.convertClass = function (name, fullName, definition) {
-        return new Class(name, fullName, this.convertFunctions(definition.methods, false), this.convertProperties(definition.properties, false));
+    Converter.prototype.convertClass = function (name, fullName, definition) {
+        return new TSClass(name, fullName, this.convertFunctions(definition.methods, false), this.convertProperties(definition.properties, false));
     };
+    Converter.prototype.convertClasses = function () {
+        var definition;
+        var nameParts;
+        var result = "";
+        var m;
+        var cls;
 
-    this.convertClasses = function () {
-        var definition, nameParts, result = "", module, cls;
-        for (var i in apiDoc) {
-            definition = apiDoc[i];
-            if (this.isClass(definition) && i.indexOf("-") < 0) {
+        for(var i in this.apiDoc) {
+            definition = this.apiDoc[i];
+            if(this.isClass(definition) && i.indexOf("-") < 0) {
                 nameParts = i.split(".");
-                if (nameParts.length > 1) {
-                    module = nameParts.splice(0, nameParts.length - 1).join(".");
-
-                    // Sometimes the inner classes get into the docs, we want to filter those out since typescript doesnt support em
-                    if (!this.isSubClass(definition)) {
+                if(nameParts.length > 1) {
+                    m = nameParts.splice(0, nameParts.length - 1).join(".");
+                    if(!this.isSubClass(definition)) {
                         cls = this.convertClass(nameParts[nameParts.length - 1], i, definition);
-                        classes[i] = cls;
-                        this.getModule(module).addClass(cls);
+                        this.classes[i] = cls;
+                        this.getModule(m).addClass(cls);
                     }
                 }
             }
         }
         return result;
     };
-
-    /**
-     * Converts the API DOC in json format to TypeScript
-     */
-    this.convert = function (convertApiDoc, roots) {
-        apiDoc = convertApiDoc;
-
-        var i, moduleName, module, b = "";
+    Converter.prototype.convert = function (convertApiDoc, roots) {
+        this.apiDoc = convertApiDoc;
+        var i;
+        var moduleName;
+        var module;
+        var b = "";
 
         this.convertClasses();
-
-        // Create all the root modules
-    /*    for (i = 0; i < roots.length; i += 1) {
-            moduleName = roots[i];
-            modules[moduleName] = this.convertModule(moduleName, apiDoc[moduleName]);
-        }*/
         this.convertModules(roots);
-
         this.processMixins();
-
-        for (i in modules) {
-            // Can't have module names with dashes or Numbers, or has the word keyword in the namespace
-            if (i.indexOf("-") < 0 &&
-                !i.match(/\.\d+\.?/) &&
-                i.indexOf("keyword") < 0 &&
-                i.indexOf("window.") < 0 &&
-                i.indexOf("document.") < 0 &&
-                i.indexOf("_bool") < 0 &&
-                i !== 'Math' &&
-                i !== 'dojox.highlight.languages.pygments._html.tags' &&
-                i !== 'dojox.dtl.contrib.data._BoundItem.get') {
-                b += modules[i].toString();
+        for(i in this.modules) {
+            if(i.indexOf("-") < 0 && !i.match(/\.\d+\.?/) && i.indexOf("keyword") < 0 && i.indexOf("window.") < 0 && i.indexOf("document.") < 0 && i.indexOf("_bool") < 0 && i !== 'Math' && i !== 'dojox.highlight.languages.pygments._html.tags' && i !== 'dojox.dtl.contrib.data._BoundItem.get') {
+                b += this.modules[i].toString();
             }
         }
         return b;
     };
-}
-
+    return Converter;
+})();
 var converter = new Converter();
-fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2])), ["dojo", "dijit", "dojox"]));
+fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2])), [
+    "dojo", 
+    "dijit", 
+    "dojox"
+]));
