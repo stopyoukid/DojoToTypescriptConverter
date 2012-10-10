@@ -1,6 +1,7 @@
 /// <reference path='node.d.ts' />
 
 var fs = require("fs");
+var tsort = require("./tsort/tsort.js");
 
 class SimpleType {
     public name: string;
@@ -90,12 +91,15 @@ class TSFunction extends SimpleType {
 
 class TSModule {
 
+    static NEXT_ID = 0;
+
     // HACK: Some of the modules are defined as interfaces in lib.d.ts
     static INTERFACE_NAMES = ["Object", "Array", "navigator", "console", "window", "document"];
 
     // HACK: Some of the interfaces have duplicate members as the ones in lib.d.ts, filter em out
     static GLOBAL_MEMBER_FILTER = { "Object": { "toString": true, "hasOwnProperty": true }, "Array": {"slice":true , "concat": true }};
 
+    public id = "Module_" + (TSModule.NEXT_ID += 1);
     public name: string;
     public functions: TSFunction[];
     public properties: TSProperty[];
@@ -245,6 +249,10 @@ class TSClass {
         }
     };
 
+    getSuperclass(): string {
+        return this.mixins.length > 0 ? this.mixins[0].fullname : "";
+    };
+
     toString(propertyAndFunctionsOnly?: bool = false, memberFilters?: Object = {}) : string {
         var b = "",
             i,
@@ -257,16 +265,16 @@ class TSClass {
             b += this.name;
 
             // Support only one superclass
-            /*if (this.mixins && this.mixins.length > 0) {
+            if (this.mixins && this.mixins.length > 0) {
                 b += " extends " + this.mixins[0].fullname + " ";
                 this.mixins[0].calculateMemberList(memberFilters);
-            }*/
+            }
 
             b += "{\n";
         }
 
         // Mixin the other ones
-        for (i = 0; i < this.mixins.length; i += 1) {
+        for (i = 1; i < this.mixins.length; i += 1) {
             mi = this.mixins[i];
             b += mi.toString(true, memberFilters);
         }
@@ -316,7 +324,7 @@ class TSClass {
 
 class Converter {
     apiDoc = {};
-    modules = {};
+    modules: TSModule[] = [];
     classes = {};
     
     /**
@@ -471,10 +479,11 @@ class Converter {
     };
 
     getModule (name: string) : TSModule {
-        var m = this.modules[name] = this.modules[name] || new TSModule(name);
+        //var m = this.modules[name] = this.modules[name] || new TSModule(name);
+        var m = new TSModule(name);
+        this.modules.push(m);
         return m;
     };
-
 
     /**
      * Expands the parameter definition into unique sets of parameters
@@ -522,6 +531,36 @@ class Converter {
         return result;
     };
 
+    calculateClassLoadOrders (): Object {
+        var i, loadOrders: Object = {}, cls : TSClass, superclass: string, loadDependencies: string[][] = [];
+        for (i in this.classes) {
+            cls = this.classes[i];
+            superclass = cls.getSuperclass();
+            if (superclass) {
+                loadDependencies.push([cls.fullname, superclass]);
+            }
+        }
+
+        var results = tsort(loadDependencies).reverse();
+        for (i = 0; i < results.length; i += 1) {
+            loadOrders[results[i]] = i + 1;
+        }
+        return loadOrders;
+    };
+
+    sortModules(): TSModule[] {
+        var modules: TSModule[] = [], loadOrders = {}, i, m, minOrder, orders = {};
+        loadOrders = this.calculateClassLoadOrders();
+        for (i = 0; i < this.modules.length; i += 1) {
+            m = this.modules[i];
+            minOrder = (m.classes.length > 0 && loadOrders[m.classes[0].fullname]) || 99999999;
+            orders[m.id] = minOrder;
+            modules.push(m);
+        }
+        modules.sort((a, b) => { return orders[a.id] - orders[b.id]; });
+        return modules;
+    };
+
     processMixins () : void {
         var i, j, cls, definition, mis, mi;
         for (i in this.classes) {
@@ -539,6 +578,10 @@ class Converter {
         }
     };
 
+    /**
+     * Converts the parameters for a definition
+     * @param {object[]} parameterDefinitions The parameter definitions from the api doc
+     */
     convertParameters(parameterDefinitions: any) : string[][] {
         var result = [];
 
@@ -551,6 +594,10 @@ class Converter {
         return result;
     };
 
+    /**
+     * Converts the documentation for the given api definition (method/property/class...)
+     * @param {object} definition The api definition to get the documentation from
+     */
     convertDocumentation (definition: any) : TSDocumentation {
         var summary = definition.summary;
         if (summary) {
@@ -558,7 +605,12 @@ class Converter {
         }
     };
 
-    convertProperties (propertyDefs:any, isModule?:bool) : TSProperty[] {
+    /**
+     * Converts all the given properties
+     * @param {object[]} propertyDefs The property definitions from the api doc
+     * @param {bool} isModule If the property belongs to a module
+     */
+    convertProperties (propertyDefs:any) : TSProperty[] {
         var i, propDef, props = [], name;
         if (propertyDefs) {
             for (i = 0; i < propertyDefs.length; i += 1) {
@@ -573,7 +625,11 @@ class Converter {
         return props;
     };
 
-    convertFunctions (functionDefs: any, isModule?: bool) : TSFunction[] {
+    /**
+     * Converts all the given functions
+     * @param {object[]} functionDefs The function definitions from the api doc
+     */
+    convertFunctions (functionDefs: any) : TSFunction[] {
         var i, fnDef, fns = [], parameterSets, j, returnType: string, returnTypes: any, name;
         if (functionDefs) {
             for (i = 0; i < functionDefs.length; i += 1) {
@@ -596,27 +652,32 @@ class Converter {
                     for (j = 0; j < parameterSets.length; j += 1) {
                         fns.push(new TSFunction(<string>fnDef.name, parameterSets[j], returnType, this.convertDocumentation(fnDef)));
                     }
-
-                    // Add an "overload" definition
-                    //fns.push(new Function(fnDef.name, ["a?:any"], "any", this.convertDocumentation(fnDef), isModule, true));
                 }
             }
         }
         return fns;
     };
 
-    convertModule(name: string, definition: any) {
+    /**
+     * Converts the given module
+     * @param {string} name The name of the module
+     * @param {object} definition The definition in the api doc for the module
+     */
+    convertModule(name: string, definition: any) : TSModule {
         var m : TSModule;
         if (definition) {
             m = this.getModule(name);
-            m.addFunctions(this.convertFunctions(definition.methods, true));
-            m.addProperties(this.convertProperties(definition.properties, true));
+            m.addFunctions(this.convertFunctions(definition.methods));
+            m.addProperties(this.convertProperties(definition.properties));
         }
 
         return m;
     };
 
-    convertModules (roots: string[]) {
+    /**
+     * Converts all the modules in the api doc, a module is a namespace/static class
+     */
+    convertModules () {
         var i, definition;
         for (i in this.apiDoc) {
             definition = this.apiDoc[i];
@@ -626,10 +687,19 @@ class Converter {
         }
     };
 
+    /**
+     * Converts the given class
+     * @param {string} name The name of the class
+     * @param {string} fullname The full name of the class including the namespace
+     * @param {object} definition The api document definition of the class
+     */
     convertClass (name: string, fullName: string, definition: any) {
-        return new TSClass(name, fullName, this.convertFunctions(definition.methods, false), this.convertProperties(definition.properties, false));
+        return new TSClass(name, fullName, this.convertFunctions(definition.methods), this.convertProperties(definition.properties));
     };
 
+    /**
+     * Converts all the classes within the api doc
+     */
     convertClasses () {
         var definition, nameParts, result = "", m, cls;
         for (var i in this.apiDoc) {
@@ -654,34 +724,35 @@ class Converter {
     /**
      * Converts the API DOC in json format to TypeScript
      */
-    convert (convertApiDoc:Object, roots:string[]) {
+    convert (convertApiDoc:Object) {
         this.apiDoc = convertApiDoc;
 
-        var i, moduleName, module, b = "";
+        var i, moduleName, b = "", loadOrders : Object, modules : TSModule[];
 
         this.convertClasses();
 
-        // Create all the root modules
-    /*    for (i = 0; i < roots.length; i += 1) {
-            moduleName = roots[i];
-            modules[moduleName] = this.convertModule(moduleName, apiDoc[moduleName]);
-        }*/
-        this.convertModules(roots);
+        this.convertModules();
 
         this.processMixins();
 
-        for (i in this.modules) {
-            // Can't have module names with dashes or Numbers, or has the word keyword in the namespace
-            if (i.indexOf("-") < 0 &&
-                !i.match(/\.\d+\.?/) &&
-                i.indexOf("keyword") < 0 &&
-                i.indexOf("window.") < 0 &&
-                i.indexOf("document.") < 0 &&
-                i.indexOf("_bool") < 0 &&
-                i !== 'Math' &&
-                i !== 'dojox.highlight.languages.pygments._html.tags' &&
-                i !== 'dojox.dtl.contrib.data._BoundItem.get') {
-                b += this.modules[i].toString();
+        modules = this.sortModules();
+
+        for (i = 0; i < modules.length; i += 1) {
+            if (modules[i]) {
+                moduleName = modules[i].name;
+
+                // Can't have module names with dashes or Numbers, or has the word keyword in the namespace
+                if (moduleName.indexOf("-") < 0 &&
+                    !moduleName.match(/\.\d+\.?/) &&
+                    moduleName.indexOf("keyword") < 0 &&
+                    moduleName.indexOf("window.") < 0 &&
+                    moduleName.indexOf("document.") < 0 &&
+                    moduleName.indexOf("_bool") < 0 &&
+                    moduleName !== 'Math' &&
+                    moduleName !== 'dojox.highlight.languages.pygments._html.tags' &&
+                    moduleName !== 'dojox.dtl.contrib.data._BoundItem.get') {
+                    b += modules[i].toString();
+                }
             }
         }
         return b;
@@ -689,4 +760,4 @@ class Converter {
 }
 
 var converter = new Converter();
-fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2])), ["dojo", "dijit", "dojox"]));
+fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2]))));

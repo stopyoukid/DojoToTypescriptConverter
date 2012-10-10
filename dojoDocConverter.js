@@ -4,6 +4,7 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 }
 var fs = require("fs");
+var tsort = require("./tsort/tsort.js");
 var SimpleType = (function () {
     function SimpleType(name, type, documentation) {
         this.name = name;
@@ -87,11 +88,13 @@ var TSModule = (function () {
         if (typeof functions === "undefined") { functions = []; }
         if (typeof properties === "undefined") { properties = []; }
         if (typeof classes === "undefined") { classes = []; }
+        this.id = "Module_" + (TSModule.NEXT_ID += 1);
         this.name = name;
         this.functions = functions;
         this.properties = properties;
         this.classes = classes;
     }
+    TSModule.NEXT_ID = 0;
     TSModule.INTERFACE_NAMES = [
         "Object", 
         "Array", 
@@ -229,6 +232,9 @@ var TSClass = (function () {
             mi.calculateMemberList(memberMap);
         }
     };
+    TSClass.prototype.getSuperclass = function () {
+        return this.mixins.length > 0 ? this.mixins[0].fullname : "";
+    };
     TSClass.prototype.toString = function (propertyAndFunctionsOnly, memberFilters) {
         if (typeof propertyAndFunctionsOnly === "undefined") { propertyAndFunctionsOnly = false; }
         if (typeof memberFilters === "undefined") { memberFilters = {
@@ -242,9 +248,13 @@ var TSClass = (function () {
         if(!propertyAndFunctionsOnly) {
             b += "export class ";
             b += this.name;
+            if(this.mixins && this.mixins.length > 0) {
+                b += " extends " + this.mixins[0].fullname + " ";
+                this.mixins[0].calculateMemberList(memberFilters);
+            }
             b += "{\n";
         }
-        for(i = 0; i < this.mixins.length; i += 1) {
+        for(i = 1; i < this.mixins.length; i += 1) {
             mi = this.mixins[i];
             b += mi.toString(true, memberFilters);
         }
@@ -273,8 +283,7 @@ var Converter = (function () {
     function Converter() {
         this.apiDoc = {
         };
-        this.modules = {
-        };
+        this.modules = [];
         this.classes = {
         };
     }
@@ -475,7 +484,8 @@ var Converter = (function () {
         return false;
     };
     Converter.prototype.getModule = function (name) {
-        var m = this.modules[name] = this.modules[name] || new TSModule(name);
+        var m = new TSModule(name);
+        this.modules.push(m);
         return m;
     };
     Converter.prototype.getParameterTypeSets = function (parameterDefinitions, i, forceOptional) {
@@ -531,6 +541,52 @@ var Converter = (function () {
         }
         return result;
     };
+    Converter.prototype.calculateClassLoadOrders = function () {
+        var i;
+        var loadOrders = {
+        };
+        var cls;
+        var superclass;
+        var loadDependencies = [];
+
+        for(i in this.classes) {
+            cls = this.classes[i];
+            superclass = cls.getSuperclass();
+            if(superclass) {
+                loadDependencies.push([
+                    cls.fullname, 
+                    superclass
+                ]);
+            }
+        }
+        var results = tsort(loadDependencies).reverse();
+        for(i = 0; i < results.length; i += 1) {
+            loadOrders[results[i]] = i + 1;
+        }
+        return loadOrders;
+    };
+    Converter.prototype.sortModules = function () {
+        var modules = [];
+        var loadOrders = {
+        };
+        var i;
+        var m;
+        var minOrder;
+        var orders = {
+        };
+
+        loadOrders = this.calculateClassLoadOrders();
+        for(i = 0; i < this.modules.length; i += 1) {
+            m = this.modules[i];
+            minOrder = (m.classes.length > 0 && loadOrders[m.classes[0].fullname]) || 99999999;
+            orders[m.id] = minOrder;
+            modules.push(m);
+        }
+        modules.sort(function (a, b) {
+            return orders[a.id] - orders[b.id];
+        });
+        return modules;
+    };
     Converter.prototype.processMixins = function () {
         var i;
         var j;
@@ -568,7 +624,7 @@ var Converter = (function () {
             return new TSDocumentation(summary);
         }
     };
-    Converter.prototype.convertProperties = function (propertyDefs, isModule) {
+    Converter.prototype.convertProperties = function (propertyDefs) {
         var i;
         var propDef;
         var props = [];
@@ -585,7 +641,7 @@ var Converter = (function () {
         }
         return props;
     };
-    Converter.prototype.convertFunctions = function (functionDefs, isModule) {
+    Converter.prototype.convertFunctions = function (functionDefs) {
         var i;
         var fnDef;
         var fns = [];
@@ -618,12 +674,12 @@ var Converter = (function () {
         var m;
         if(definition) {
             m = this.getModule(name);
-            m.addFunctions(this.convertFunctions(definition.methods, true));
-            m.addProperties(this.convertProperties(definition.properties, true));
+            m.addFunctions(this.convertFunctions(definition.methods));
+            m.addProperties(this.convertProperties(definition.properties));
         }
         return m;
     };
-    Converter.prototype.convertModules = function (roots) {
+    Converter.prototype.convertModules = function () {
         var i;
         var definition;
 
@@ -635,7 +691,7 @@ var Converter = (function () {
         }
     };
     Converter.prototype.convertClass = function (name, fullName, definition) {
-        return new TSClass(name, fullName, this.convertFunctions(definition.methods, false), this.convertProperties(definition.properties, false));
+        return new TSClass(name, fullName, this.convertFunctions(definition.methods), this.convertProperties(definition.properties));
     };
     Converter.prototype.convertClasses = function () {
         var definition;
@@ -660,19 +716,24 @@ var Converter = (function () {
         }
         return result;
     };
-    Converter.prototype.convert = function (convertApiDoc, roots) {
+    Converter.prototype.convert = function (convertApiDoc) {
         this.apiDoc = convertApiDoc;
         var i;
         var moduleName;
-        var module;
         var b = "";
+        var loadOrders;
+        var modules;
 
         this.convertClasses();
-        this.convertModules(roots);
+        this.convertModules();
         this.processMixins();
-        for(i in this.modules) {
-            if(i.indexOf("-") < 0 && !i.match(/\.\d+\.?/) && i.indexOf("keyword") < 0 && i.indexOf("window.") < 0 && i.indexOf("document.") < 0 && i.indexOf("_bool") < 0 && i !== 'Math' && i !== 'dojox.highlight.languages.pygments._html.tags' && i !== 'dojox.dtl.contrib.data._BoundItem.get') {
-                b += this.modules[i].toString();
+        modules = this.sortModules();
+        for(i = 0; i < modules.length; i += 1) {
+            if(modules[i]) {
+                moduleName = modules[i].name;
+                if(moduleName.indexOf("-") < 0 && !moduleName.match(/\.\d+\.?/) && moduleName.indexOf("keyword") < 0 && moduleName.indexOf("window.") < 0 && moduleName.indexOf("document.") < 0 && moduleName.indexOf("_bool") < 0 && moduleName !== 'Math' && moduleName !== 'dojox.highlight.languages.pygments._html.tags' && moduleName !== 'dojox.dtl.contrib.data._BoundItem.get') {
+                    b += modules[i].toString();
+                }
             }
         }
         return b;
@@ -680,8 +741,4 @@ var Converter = (function () {
     return Converter;
 })();
 var converter = new Converter();
-fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2])), [
-    "dojo", 
-    "dijit", 
-    "dojox"
-]));
+fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2]))));
