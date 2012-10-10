@@ -20,4 +20,5 @@ node dojoDocConverter.js api.json dojo.d.ts
 
 ###Plans
 *   Fix inheritance
+*   Add in skipped classes that use keywords as property names.
 *   Thorough testing
