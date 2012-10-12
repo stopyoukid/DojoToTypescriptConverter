@@ -1,6 +1,7 @@
 /// <reference path='node.d.ts' />
 
 var fs = require("fs");
+var path = require("path");
 var tsort = require("./tsort/tsort.js");
 
 class SimpleType {
@@ -294,27 +295,6 @@ class TSClass {
             }
         }
 
-        // HACK: for mixins
-        /*for (i = 0; i < mixins.length; i += 1) {
-            miProps = mixins[i].properties;
-            miFuncs = mixins[i].functions;
-
-            if (miProps) {
-                for (j = 0; j < miProps.length; j += 1) {
-                    if (!processedProps[miProps[j].name]) {
-                        b += miProps[j].toString();
-                    }
-                }
-            }
-            if (miFuncs) {
-                for (j = 0; j < miFuncs.length; j += 1) {
-                    if (!processedFunctions[miFuncs[j].name]) {
-                        b += miFuncs[j].toString();
-                    }
-                }
-            }
-            //b += mixins[i].toString(true);
-        }*/
         if (!propertyAndFunctionsOnly) {
             b += "}\n";
         }
@@ -724,10 +704,10 @@ class Converter {
     /**
      * Converts the API DOC in json format to TypeScript
      */
-    convert (convertApiDoc:Object) {
+    convert (convertApiDoc:Object, singleFile: bool) : Object {
         this.apiDoc = convertApiDoc;
 
-        var i, moduleName, b = "", loadOrders : Object, modules : TSModule[];
+        var i, moduleName, b = "", resultName: string, m: TSModule, loadOrders: Object, modules: TSModule[], resultMap = {};
 
         this.convertClasses();
 
@@ -751,13 +731,44 @@ class Converter {
                     moduleName !== 'Math' &&
                     moduleName !== 'dojox.highlight.languages.pygments._html.tags' &&
                     moduleName !== 'dojox.dtl.contrib.data._BoundItem.get') {
-                    b += modules[i].toString();
+                    m = modules[i];
+                    if (singleFile) {
+                        resultName = "dojo";
+                    } else {
+                        /// Output individual class names
+                        resultName = m.classes.length > 0 ? m.classes[0].fullname : moduleName;
+                    }
+                    resultMap[resultName] = (resultMap[resultName] || "") + modules[i].toString();
                 }
             }
         }
-        return b;
+        return resultMap;
     };
 }
 
-var converter = new Converter();
-fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2]))));
+var converter = new Converter(), 
+    out = process.argv[3],
+    outDir = "",
+    singleFile = false,
+    conversionResult;
+
+if (out) {
+    // We are processing a single file cause they passed in an extension
+    if (path.extname(out) !== "") {
+        singleFile = true;
+        outDir = path.dirname(path.resolve(out));
+    } else {
+        outDir = out;
+    }
+} else {
+    out = "./";
+}
+
+if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir);
+}
+
+conversionResult = converter.convert(JSON.parse(fs.readFileSync(process.argv[2])), singleFile);
+for (var i in conversionResult) {
+    fs.writeFileSync(singleFile ? out : (out + "/" + i + ".d.ts"), conversionResult[i]);
+}

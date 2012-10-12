@@ -4,6 +4,7 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 }
 var fs = require("fs");
+var path = require("path");
 var tsort = require("./tsort/tsort.js");
 var SimpleType = (function () {
     function SimpleType(name, type, documentation) {
@@ -716,13 +717,17 @@ var Converter = (function () {
         }
         return result;
     };
-    Converter.prototype.convert = function (convertApiDoc) {
+    Converter.prototype.convert = function (convertApiDoc, singleFile) {
         this.apiDoc = convertApiDoc;
         var i;
         var moduleName;
         var b = "";
+        var resultName;
+        var m;
         var loadOrders;
         var modules;
+        var resultMap = {
+        };
 
         this.convertClasses();
         this.convertModules();
@@ -732,13 +737,40 @@ var Converter = (function () {
             if(modules[i]) {
                 moduleName = modules[i].name;
                 if(moduleName.indexOf("-") < 0 && !moduleName.match(/\.\d+\.?/) && moduleName.indexOf("keyword") < 0 && moduleName.indexOf("window.") < 0 && moduleName.indexOf("document.") < 0 && moduleName.indexOf("_bool") < 0 && moduleName !== 'Math' && moduleName !== 'dojox.highlight.languages.pygments._html.tags' && moduleName !== 'dojox.dtl.contrib.data._BoundItem.get') {
-                    b += modules[i].toString();
+                    m = modules[i];
+                    if(singleFile) {
+                        resultName = "dojo";
+                    } else {
+                        resultName = m.classes.length > 0 ? m.classes[0].fullname : moduleName;
+                    }
+                    resultMap[resultName] = (resultMap[resultName] || "") + modules[i].toString();
                 }
             }
         }
-        return b;
+        return resultMap;
     };
     return Converter;
 })();
 var converter = new Converter();
-fs.writeFileSync(process.argv[3], converter.convert(JSON.parse(fs.readFileSync(process.argv[2]))));
+var out = process.argv[3];
+var outDir = "";
+var singleFile = false;
+var conversionResult;
+
+if(out) {
+    if(path.extname(out) !== "") {
+        singleFile = true;
+        outDir = path.dirname(path.resolve(out));
+    } else {
+        outDir = out;
+    }
+} else {
+    out = "./";
+}
+if(!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir);
+}
+conversionResult = converter.convert(JSON.parse(fs.readFileSync(process.argv[2])), singleFile);
+for(var i in conversionResult) {
+    fs.writeFileSync(singleFile ? out : (out + "/" + i + ".d.ts"), conversionResult[i]);
+}
