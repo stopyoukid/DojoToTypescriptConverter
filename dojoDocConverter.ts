@@ -4,6 +4,7 @@ var fs = require("fs");
 var path = require("path");
 var tsort = require("./tsort/tsort.js");
 
+// TODO: Update classes to use inheritance better.
 class SimpleType {
     public name: string;
     public type: string;
@@ -56,17 +57,47 @@ class TSProperty extends SimpleType {
     };
 }
 
+class TSArg {
+    public name: string;
+    public type: string;
+    constructor (name: string, type: string) {
+        this.name = name;
+        this.type = type;
+    }
+
+    toString() {
+        return this.name + ":" + this.type;
+    }
+}
+
 class TSFunction extends SimpleType {
     public isOverload: bool;
     public returnType: string;
-    public args: string[];
+    public args: TSArg[];
 
-    constructor (name: string, args: string[], returnType?: string, documentation?: TSDocumentation, isOverload?: bool) {
+    constructor (name: string, args: TSArg[], returnType?: string, documentation?: TSDocumentation, isOverload?: bool) {
         super(name, returnType, documentation);
 
         this.isOverload = isOverload;
         this.args = args;
         this.returnType = returnType;
+    };
+
+    /**
+     * Gets all types used within this module (including functions, variables, and superclasses)
+     */
+    getAllTypes(): Object {
+        var result = {}, i, j, subTypes;
+
+        for (i = 0; i < this.args.length; i += 1) {
+            result[this.args[i].type] = true;
+        };
+
+        if (this.returnType) {
+            result[this.returnType] = true;
+        }
+
+        return result;
     };
 
     toString(isModuleFn: bool) : string {
@@ -148,6 +179,33 @@ class TSModule {
     isFilteredMember(member: { name: string; }) : bool {
         var filters = TSModule.GLOBAL_MEMBER_FILTER[this.name];
         return filters && filters[member.name];
+    };
+
+    /**
+     * Gets all types used within this module (including functions, variables, and superclasses)
+     */
+    getAllTypes(): Object {
+        var result = {}, i, j, subTypes;
+
+        for (i = 0; i < this.properties.length; i += 1) {
+            result[this.properties[i].type] = true;
+        };
+
+        for (i = 0; i < this.functions.length; i += 1) {
+            subTypes = this.functions[i].getAllTypes();
+            for (j in subTypes) {
+                result[j] = true;
+            }
+        };
+
+        for (i = 0; i < this.classes.length; i += 1) {
+            subTypes = this.classes[i].getAllTypes();
+            for (j in subTypes) {
+                result[j] = true;
+            }
+        };
+
+        return result;
     };
 
     toString () : string {
@@ -248,6 +306,30 @@ class TSClass {
             mi = this.mixins[i];
             mi.calculateMemberList(memberMap);
         }
+    };
+
+    /**
+     * Gets all types used within this module (including functions, variables, and superclasses)
+     */
+    getAllTypes(): Object {
+        var result = {}, i, j, subTypes;
+
+        for (i = 0; i < this.properties.length; i += 1) {
+            result[this.properties[i].type] = true;
+        };
+
+        for (i = 0; i < this.functions.length; i += 1) {
+            subTypes = this.functions[i].getAllTypes();
+            for (j = 0; j < subTypes.length; j += 1) {
+                result[subTypes[j]] = true;
+            }
+        };
+
+        for (i = 0; i < this.mixins.length; i += 1) {
+            result[this.mixins[i].fullname] = true;
+        };
+
+        return result;
     };
 
     getSuperclass(): string {
@@ -469,8 +551,8 @@ class Converter {
      * Expands the parameter definition into unique sets of parameters
      * cause some parameters can be multiple types
      */
-    getParameterTypeSets (parameterDefinitions:any, i: number = 0, forceOptional?: bool) : string[][] {
-        var result = [], paramDef, paramTypes, paramType, subparameterSets = [], j, k, paramName, newParam, typeMap = {}, oneOrMore;
+    getParameterTypeSets (parameterDefinitions:any, i: number = 0, forceOptional?: bool) : TSArg[][] {
+        var result = [], paramDef, paramTypes, paramType, subparameterSets:TSArg[][] = [], j, k, paramName, newParam: TSArg[], typeMap = {}, oneOrMore;
         i = i || 0;
         paramDef = parameterDefinitions[i];
         forceOptional = forceOptional || paramDef.usage === "optional";
@@ -490,7 +572,7 @@ class Converter {
                 // This prevents multiple types that resolve to the same type so any,any
                 if (!typeMap[paramType]) {
                     typeMap[paramType] = true;
-                    newParam = [paramName + ": " + paramType];
+                    newParam = [new TSArg(paramName, paramType)];
 
                     if (subparameterSets && subparameterSets.length > 0) {
                         for (k = 0; k < subparameterSets.length; k += 1) {
@@ -505,7 +587,7 @@ class Converter {
 
         // If we have one or more, use vargs
         if (paramDef.usage === "one-or-more") {
-            result.push([["..." + paramName + j + ": " + paramType + "[]"]]);
+            result.push([[new TSArg("..." + paramName, paramType + "[]")]]);
         }
 
         return result;
@@ -562,7 +644,7 @@ class Converter {
      * Converts the parameters for a definition
      * @param {object[]} parameterDefinitions The parameter definitions from the api doc
      */
-    convertParameters(parameterDefinitions: any) : string[][] {
+    convertParameters(parameterDefinitions: any) : TSArg[][] {
         var result = [];
 
         if (parameterDefinitions) {
@@ -610,7 +692,7 @@ class Converter {
      * @param {object[]} functionDefs The function definitions from the api doc
      */
     convertFunctions (functionDefs: any) : TSFunction[] {
-        var i, fnDef, fns = [], parameterSets, j, returnType: string, returnTypes: any, name;
+        var i, fnDef, fns = [], parameterSets : TSArg[][], j, returnType: string, returnTypes: any, name;
         if (functionDefs) {
             for (i = 0; i < functionDefs.length; i += 1) {
                 fnDef = functionDefs[i];
@@ -707,7 +789,7 @@ class Converter {
     convert (convertApiDoc:Object, singleFile: bool) : Object {
         this.apiDoc = convertApiDoc;
 
-        var i, moduleName, b = "", resultName: string, m: TSModule, loadOrders: Object, modules: TSModule[], resultMap = {};
+        var i, moduleName, b = "", resultName: string, m: TSModule, loadOrders: Object, modules: TSModule[], resultMap = {}, moduleResult = "", j, allTypes: Object;
 
         this.convertClasses();
 
@@ -720,6 +802,7 @@ class Converter {
         for (i = 0; i < modules.length; i += 1) {
             if (modules[i]) {
                 moduleName = modules[i].name;
+                moduleResult = "";
 
                 // Can't have module names with dashes or Numbers, or has the word keyword in the namespace
                 if (moduleName.indexOf("-") < 0 &&
@@ -737,8 +820,17 @@ class Converter {
                     } else {
                         /// Output individual class names
                         resultName = m.classes.length > 0 ? m.classes[0].fullname : moduleName;
+                        allTypes = m.getAllTypes();
+                        for (j in allTypes) {
+                            if (this.isClass(this.apiDoc[j])) {
+                                moduleResult += "/// <reference path=\"Object.d.ts\" />\n";
+                                moduleResult += "/// <reference path=\"" + j + ".d.ts\" />\n";
+                            }
+                        }
                     }
-                    resultMap[resultName] = (resultMap[resultName] || "") + modules[i].toString();
+
+                    moduleResult += modules[i].toString();
+                    resultMap[resultName] = (resultMap[resultName] || "") + moduleResult;
                 }
             }
         }

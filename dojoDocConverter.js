@@ -53,6 +53,16 @@ var TSProperty = (function (_super) {
     };
     return TSProperty;
 })(SimpleType);
+var TSArg = (function () {
+    function TSArg(name, type) {
+        this.name = name;
+        this.type = type;
+    }
+    TSArg.prototype.toString = function () {
+        return this.name + ":" + this.type;
+    };
+    return TSArg;
+})();
 var TSFunction = (function (_super) {
     __extends(TSFunction, _super);
     function TSFunction(name, args, returnType, documentation, isOverload) {
@@ -61,6 +71,22 @@ var TSFunction = (function (_super) {
         this.args = args;
         this.returnType = returnType;
     }
+    TSFunction.prototype.getAllTypes = function () {
+        var result = {
+        };
+        var i;
+        var j;
+        var subTypes;
+
+        for(i = 0; i < this.args.length; i += 1) {
+            result[this.args[i].type] = true;
+        }
+        ; ;
+        if(this.returnType) {
+            result[this.returnType] = true;
+        }
+        return result;
+    };
     TSFunction.prototype.toString = function (isModuleFn) {
         var b = "";
         var docs = this.documentation;
@@ -144,6 +170,33 @@ var TSModule = (function () {
     TSModule.prototype.isFilteredMember = function (member) {
         var filters = TSModule.GLOBAL_MEMBER_FILTER[this.name];
         return filters && filters[member.name];
+    };
+    TSModule.prototype.getAllTypes = function () {
+        var result = {
+        };
+        var i;
+        var j;
+        var subTypes;
+
+        for(i = 0; i < this.properties.length; i += 1) {
+            result[this.properties[i].type] = true;
+        }
+        ; ;
+        for(i = 0; i < this.functions.length; i += 1) {
+            subTypes = this.functions[i].getAllTypes();
+            for(j in subTypes) {
+                result[j] = true;
+            }
+        }
+        ; ;
+        for(i = 0; i < this.classes.length; i += 1) {
+            subTypes = this.classes[i].getAllTypes();
+            for(j in subTypes) {
+                result[j] = true;
+            }
+        }
+        ; ;
+        return result;
     };
     TSModule.prototype.toString = function () {
         var b = "";
@@ -232,6 +285,30 @@ var TSClass = (function () {
             mi = this.mixins[i];
             mi.calculateMemberList(memberMap);
         }
+    };
+    TSClass.prototype.getAllTypes = function () {
+        var result = {
+        };
+        var i;
+        var j;
+        var subTypes;
+
+        for(i = 0; i < this.properties.length; i += 1) {
+            result[this.properties[i].type] = true;
+        }
+        ; ;
+        for(i = 0; i < this.functions.length; i += 1) {
+            subTypes = this.functions[i].getAllTypes();
+            for(j = 0; j < subTypes.length; j += 1) {
+                result[subTypes[j]] = true;
+            }
+        }
+        ; ;
+        for(i = 0; i < this.mixins.length; i += 1) {
+            result[this.mixins[i].fullname] = true;
+        }
+        ; ;
+        return result;
     };
     TSClass.prototype.getSuperclass = function () {
         return this.mixins.length > 0 ? this.mixins[0].fullname : "";
@@ -521,7 +598,7 @@ var Converter = (function () {
                 if(!typeMap[paramType]) {
                     typeMap[paramType] = true;
                     newParam = [
-                        paramName + ": " + paramType
+                        new TSArg(paramName, paramType)
                     ];
                     if(subparameterSets && subparameterSets.length > 0) {
                         for(k = 0; k < subparameterSets.length; k += 1) {
@@ -536,7 +613,7 @@ var Converter = (function () {
         if(paramDef.usage === "one-or-more") {
             result.push([
                 [
-                    "..." + paramName + j + ": " + paramType + "[]"
+                    new TSArg("..." + paramName, paramType + "[]")
                 ]
             ]);
         }
@@ -728,6 +805,9 @@ var Converter = (function () {
         var modules;
         var resultMap = {
         };
+        var moduleResult = "";
+        var j;
+        var allTypes;
 
         this.convertClasses();
         this.convertModules();
@@ -736,14 +816,23 @@ var Converter = (function () {
         for(i = 0; i < modules.length; i += 1) {
             if(modules[i]) {
                 moduleName = modules[i].name;
+                moduleResult = "";
                 if(moduleName.indexOf("-") < 0 && !moduleName.match(/\.\d+\.?/) && moduleName.indexOf("keyword") < 0 && moduleName.indexOf("window.") < 0 && moduleName.indexOf("document.") < 0 && moduleName.indexOf("_bool") < 0 && moduleName !== 'Math' && moduleName !== 'dojox.highlight.languages.pygments._html.tags' && moduleName !== 'dojox.dtl.contrib.data._BoundItem.get') {
                     m = modules[i];
                     if(singleFile) {
                         resultName = "dojo";
                     } else {
                         resultName = m.classes.length > 0 ? m.classes[0].fullname : moduleName;
+                        allTypes = m.getAllTypes();
+                        for(j in allTypes) {
+                            if(this.isClass(this.apiDoc[j])) {
+                                moduleResult += "/// <reference path=\"Object.d.ts\" />\n";
+                                moduleResult += "/// <reference path=\"" + j + ".d.ts\" />\n";
+                            }
+                        }
                     }
-                    resultMap[resultName] = (resultMap[resultName] || "") + modules[i].toString();
+                    moduleResult += modules[i].toString();
+                    resultMap[resultName] = (resultMap[resultName] || "") + moduleResult;
                 }
             }
         }
