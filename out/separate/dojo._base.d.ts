@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo._base{
 export var Color : Object;
 export var Deferred : Object;

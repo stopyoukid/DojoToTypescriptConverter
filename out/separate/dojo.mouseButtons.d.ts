@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.mouseButtons{
 export var LEFT : number;
 export var MIDDLE : number;

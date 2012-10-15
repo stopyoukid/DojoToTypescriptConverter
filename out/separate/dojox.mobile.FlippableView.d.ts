@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.mobile.View.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.mobile._ScrollableMixin.d.ts" />
 module dojox.mobile{
 export class FlippableView extends dojox.mobile.View {

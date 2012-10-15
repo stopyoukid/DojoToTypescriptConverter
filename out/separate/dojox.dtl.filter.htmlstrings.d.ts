@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.htmlstrings{
 export var _linebreaksrn : any;
 export var _linebreaksn : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.data.util{
 export class JsonQuery{
 useFullIdInQueries : bool;

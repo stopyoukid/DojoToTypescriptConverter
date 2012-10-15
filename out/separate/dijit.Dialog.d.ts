@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._DialogBase.d.ts" />
 module dijit{
 export class Dialog extends dijit.layout.ContentPane {

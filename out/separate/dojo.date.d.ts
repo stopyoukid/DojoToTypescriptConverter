@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.date{
 export function getDaysInMonth (dateObject:any) : number;
 export function isLeapYear (dateObject:any) : bool;

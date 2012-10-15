@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.image{
 export class LightboxNano{
 href : String;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.vector{
 export function sum () : any;
 export function center () : any;

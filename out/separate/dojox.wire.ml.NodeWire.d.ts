@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.wire.ml.ChildWire.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
 module dojox.wire.ml{
 export class NodeWire extends dojox.wire.ml.ChildWire {

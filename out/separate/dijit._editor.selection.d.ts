@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit._editor.selection{
 export function getType () : String;
 export function getSelectedText () : String;

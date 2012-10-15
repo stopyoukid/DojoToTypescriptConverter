@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.sketch{
 export class Annotation{
 id : any;

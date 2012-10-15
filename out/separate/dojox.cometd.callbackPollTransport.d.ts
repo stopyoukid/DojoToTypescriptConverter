@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.cometd{
 export class callbackPollTransport{
 _connectionType : String;

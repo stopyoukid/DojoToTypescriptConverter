@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.wire.ml{
 export class XmlElement{
 getPropertyValue (property:String) : any;

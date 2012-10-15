@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults.textDisabled{
 export var size : String;
 export var family : String;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.hebrew{
 export function getDaysInMonth (month:any) : any;
 export function compare (dateheb1:any,dateheb2:any,portion?:String) : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module NullExp{
 export var convert : any;
 export var revert : any;

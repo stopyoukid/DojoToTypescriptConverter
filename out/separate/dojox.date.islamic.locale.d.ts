@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.islamic.locale{
 export var weekDays : Object;
 export var months : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.vml{
 export var xmlns : String;
 export function _parseFloat (str:String) : number;

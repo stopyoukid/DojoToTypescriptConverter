@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults{
 export var clickMode : Object;
 export var clickable : Object;

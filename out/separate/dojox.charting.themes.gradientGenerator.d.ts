@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.charting.themes.gradientGenerator{
 export function generateGradientByIntensity (color:any,intensityMap:any[]) : any[];
 export function generateFills (colors:any[],fillPattern:Object,lumFrom:number,lumTo:number) : any[];

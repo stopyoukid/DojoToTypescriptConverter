@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.tag.misc{
 export var DebugNode : Object;
 export var FilterNode : Object;

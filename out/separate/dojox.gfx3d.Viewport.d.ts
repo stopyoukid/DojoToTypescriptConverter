@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d{
 export class Viewport{
 camera : Object;

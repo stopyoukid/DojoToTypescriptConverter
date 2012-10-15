@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
 module dojox.layout{
 export class FloatingPane extends dojox.layout.ContentPane {

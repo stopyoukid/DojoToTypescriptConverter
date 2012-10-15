@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.manager.keys{
 export var arrowIncrement : number;
 export var arrowShiftIncrement : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.defaultRect{
 export var type : String;
 export var x : number;

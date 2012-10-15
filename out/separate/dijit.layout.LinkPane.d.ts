@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
 module dijit.layout{
 export class LinkPane extends dijit.layout.ContentPane {

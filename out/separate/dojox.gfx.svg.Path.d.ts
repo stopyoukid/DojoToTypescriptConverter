@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.svg.Shape.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.path.Path.d.ts" />
 module dojox.gfx.svg{
 export class Path extends dojox.gfx.svg.Shape {

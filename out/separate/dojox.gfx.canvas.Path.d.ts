@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.canvas.Shape.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.path.Path.d.ts" />
 module dojox.gfx.canvas{
 export class Path extends dojox.gfx.canvas.Shape {

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.charting{
 export class DataChart{
 scroll : bool;

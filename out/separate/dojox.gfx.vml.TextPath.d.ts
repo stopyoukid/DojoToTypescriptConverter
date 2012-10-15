@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.vml.Path.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.path.TextPath.d.ts" />
 module dojox.gfx.vml{
 export class TextPath extends dojox.gfx.vml.Path {

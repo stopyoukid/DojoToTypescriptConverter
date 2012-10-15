@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.lighting{
 export class Model{
 incident : Object;

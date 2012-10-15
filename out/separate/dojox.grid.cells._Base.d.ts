@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.cells{
 export class _Base{
 styles : String;

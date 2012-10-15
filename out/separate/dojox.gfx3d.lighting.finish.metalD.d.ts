@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.lighting.finish.metalD{
 export var Ka : number;
 export var Kd : number;

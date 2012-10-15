@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._DialogBase.d.ts" />
 module dojox.widget{
 export class DialogSimple extends dojox.layout.ContentPane {

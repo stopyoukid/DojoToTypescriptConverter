@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.geo.charting{
 export class _Marker{
 markerText : Object;

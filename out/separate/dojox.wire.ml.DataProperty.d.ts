@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
 module dojox.wire.ml{
 export class DataProperty extends dijit._Widget {

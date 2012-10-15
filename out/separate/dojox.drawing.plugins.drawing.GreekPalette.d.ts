@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._PaletteMixin.d.ts" />
 module dojox.drawing.plugins.drawing{
 export class GreekPalette extends dijit._Widget {

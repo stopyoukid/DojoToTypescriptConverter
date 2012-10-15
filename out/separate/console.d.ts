@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 interface console{
 warn : any;
 error : any;

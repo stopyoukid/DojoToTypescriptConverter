@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.dom{
 export var _attributes : Object;
 export var _uppers : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form{
 export class _BusyButtonMixin{
 isBusy : bool;

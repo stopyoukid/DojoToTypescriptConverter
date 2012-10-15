@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.contrib.dom{
 export var StyleNode : Object;
 export var BufferNode : Object;

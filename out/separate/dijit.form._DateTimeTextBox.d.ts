@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.RangeBoundTextBox.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._HasDropDown.d.ts" />
 module dijit.form{
 export class _DateTimeTextBox extends dijit.form.RangeBoundTextBox {

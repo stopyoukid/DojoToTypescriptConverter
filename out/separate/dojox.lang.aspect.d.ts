@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.aspect{
 export function cflow (instance:Object,method?:String) : bool;
 export function cflow (instance:Object,method?:any) : bool;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mobile{
 export var theme : any;
 export var _base : Object;

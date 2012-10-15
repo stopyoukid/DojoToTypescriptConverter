@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp.xmpp.error{
 export var BAD_REQUEST : String;
 export var CONFLICT : String;

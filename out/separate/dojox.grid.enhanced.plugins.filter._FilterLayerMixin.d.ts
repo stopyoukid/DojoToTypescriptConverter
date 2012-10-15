@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.enhanced.plugins.filter{
 export class _FilterLayerMixin{
 _filter : any;

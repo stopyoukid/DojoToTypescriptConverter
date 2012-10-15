@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.encoding.crypto.cipherModes{
 export var ECB : number;
 export var CBC : number;

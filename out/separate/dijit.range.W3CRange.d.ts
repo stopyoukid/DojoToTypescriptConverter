@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.range{
 export class W3CRange{
 commonAncestorContainer : Object;

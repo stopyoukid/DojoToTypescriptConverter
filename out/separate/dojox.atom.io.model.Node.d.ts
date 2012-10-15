@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.atom.io.model{
 export class Node{
 name_space : any;

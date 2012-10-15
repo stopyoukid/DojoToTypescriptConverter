@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.atom.io.model._actions{
 export function link (obj:any,node:any) : any;
 export function author (obj:any,node:any) : any;

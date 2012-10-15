@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.lighting.finish.dull{
 export var Ka : number;
 export var Kd : number;

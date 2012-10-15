@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.defaultImage{
 export var type : String;
 export var x : number;

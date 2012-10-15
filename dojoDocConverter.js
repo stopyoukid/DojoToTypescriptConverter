@@ -824,9 +824,9 @@ var Converter = (function () {
                     } else {
                         resultName = m.classes.length > 0 ? m.classes[0].fullname : moduleName;
                         allTypes = m.getAllTypes();
+                        moduleResult += "/// <reference path=\"Object.d.ts\" />\n";
                         for(j in allTypes) {
                             if(this.isClass(this.apiDoc[j])) {
-                                moduleResult += "/// <reference path=\"Object.d.ts\" />\n";
                                 moduleResult += "/// <reference path=\"" + j + ".d.ts\" />\n";
                             }
                         }

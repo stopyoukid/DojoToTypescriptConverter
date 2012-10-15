@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.functional{
 export var array : Object;
 export var arg : Object;

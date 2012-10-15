@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.charting.widget{
 export class Sparkline{
 theme : any;

@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojo._Url.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.av._Media.d.ts" />
 module dojox.av{
 export class FLVideo extends dijit._Widget {

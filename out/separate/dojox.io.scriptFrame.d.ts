@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.io.scriptFrame{
 export var _waiters : Object;
 export var _loadedIds : Object;

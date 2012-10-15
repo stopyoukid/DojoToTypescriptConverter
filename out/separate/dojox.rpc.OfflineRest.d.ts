@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.rpc.OfflineRest{
 export var sync : any;
 export var sendChanges : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.BOOLS{
 export var checked : number;
 export var disabled : number;

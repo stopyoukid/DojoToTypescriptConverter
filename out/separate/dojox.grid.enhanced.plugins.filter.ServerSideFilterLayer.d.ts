@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.grid.enhanced.plugins._ServerSideLayer.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.grid.enhanced.plugins.filter._FilterLayerMixin.d.ts" />
 module dojox.grid.enhanced.plugins.filter{
 export class ServerSideFilterLayer extends dojox.grid.enhanced.plugins._ServerSideLayer {

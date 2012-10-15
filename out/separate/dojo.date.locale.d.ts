@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.date.locale{
 export function _getZone (dateObject:any,getName:bool,options?:any) : any;
 export function format (dateObject:any,options?:any) : String;

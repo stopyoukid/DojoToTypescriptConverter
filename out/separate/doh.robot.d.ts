@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module doh.robot{
 export function _updateDocument () : any;
 export function _resolveNode (n:String) : any;

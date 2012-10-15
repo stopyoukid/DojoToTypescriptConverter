@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.layout.dnd{
 export class DropIndicator{
 node : Object;

@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.TitlePane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
 module dojox.widget{
 export class Portlet extends dijit.TitlePane {

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults.button.over.fill{
 export var type : String;
 export var x1 : number;

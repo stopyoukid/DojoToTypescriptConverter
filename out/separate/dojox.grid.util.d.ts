@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.util{
 export var rowIndexTag : String;
 export var gridViewTag : String;

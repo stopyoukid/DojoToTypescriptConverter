@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.dnd{
 export class Avatar{
 isA11y : Object;

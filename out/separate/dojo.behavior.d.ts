@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo{
 export class behavior{
 _behaviors : Object;

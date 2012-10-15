@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.math.stats{
 export function sd (a:any) : number;
 export function variance (a:any) : number;

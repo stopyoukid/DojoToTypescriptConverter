@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
 module dojox.widget{
 export class RollingList extends dijit._Widget {

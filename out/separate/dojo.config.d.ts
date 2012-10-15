@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.config{
 export var modulePaths : any;
 export var addOnLoad : any;

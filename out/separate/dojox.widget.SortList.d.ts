@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout._LayoutWidget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
 module dojox.widget{
 export class SortList extends dijit.layout._LayoutWidget {

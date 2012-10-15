@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit._base{
 export var focus : Object;
 export var manager : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.string.sprintf{
 export class Formatter{
 _re : any;

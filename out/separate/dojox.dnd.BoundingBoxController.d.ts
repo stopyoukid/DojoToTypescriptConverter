@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dnd{
 export class BoundingBoxController{
 _startX : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.shape.Container{
 export function openBatch () : any;
 export function closeBatch () : any;

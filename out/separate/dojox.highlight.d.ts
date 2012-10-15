@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.highlight{
 export var _base : Object;
 export function processString (str:String,lang?:String) : any;

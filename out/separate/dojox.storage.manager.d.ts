@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.storage{
 export class manager{
 available : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.highlight.languages.java.defaultMode{
 export var lexems : any[];
 export var illegal : String;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults.anchors{
 export var size : number;
 export var width : number;

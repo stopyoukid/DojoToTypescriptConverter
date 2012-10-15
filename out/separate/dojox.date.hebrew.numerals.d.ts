@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.hebrew.numerals{
 export function getYearHebrewLetters (year:number) : String;
 export function parseYearHebrewLetters (year:String) : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.sketch{
 export var tools : Object;
 export function registerTool (type:any,fn:any) : any;

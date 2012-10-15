@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._CssStateMixin.d.ts" />
 module dijit{
 export class TitlePane extends dijit.layout.ContentPane {

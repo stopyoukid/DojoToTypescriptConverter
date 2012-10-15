@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.widget._CalendarView.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
 module dojox.widget{
 export class _CalendarMonthView extends dojox.widget._CalendarView {

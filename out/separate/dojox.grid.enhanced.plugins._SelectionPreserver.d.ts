@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.enhanced.plugins{
 export class _SelectionPreserver{
 _connects : any[];

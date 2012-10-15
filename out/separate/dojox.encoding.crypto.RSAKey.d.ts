@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.encoding.crypto{
 export class RSAKey{
 n : Object;

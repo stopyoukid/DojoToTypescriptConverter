@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.logic{
 export var _yesno : any;
 export function default_ (value:any,arg:any) : any;

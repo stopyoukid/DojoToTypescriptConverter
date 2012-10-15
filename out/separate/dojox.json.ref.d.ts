@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.json.ref{
 export var _useRefs : bool;
 export var serializeFunctions : bool;

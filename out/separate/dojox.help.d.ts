@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.help{
 export var _namespaces : any[];
 export var _rpc : Object;

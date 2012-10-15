@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.svg.dasharray{
 export var solid : String;
 export var shortdash : any[];

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.rpc{
 export class Service{
 _smd : any;

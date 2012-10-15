@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.stencil{
 export var Ellipse : Object;
 export var Image : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.register._registry{
 export var attributes : any[];
 export var tags : any[];

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.arc{
 export var unitArcAsBezier : any;
 export var curvePI4 : any;

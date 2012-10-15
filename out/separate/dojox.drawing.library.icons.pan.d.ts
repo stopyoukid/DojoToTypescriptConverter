@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.library.icons.pan{
 export var type : String;
 export var borderWidth : number;

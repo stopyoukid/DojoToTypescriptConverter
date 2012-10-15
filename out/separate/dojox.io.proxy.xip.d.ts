@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.io.proxy.xip{
 export var xipClientUrl : Object;
 export var urlLimit : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.contrib.data{
 export var _BoundItem : Object;
 export var BindDataNode : Object;

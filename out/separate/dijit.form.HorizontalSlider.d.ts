@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form._FormValueWidget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
 module dijit.form{
 export class HorizontalSlider extends dijit.form._FormValueWidget {

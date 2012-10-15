@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.svg{
 export var useSvgWeb : bool;
 export function getRef (name:String) : HTMLElement;

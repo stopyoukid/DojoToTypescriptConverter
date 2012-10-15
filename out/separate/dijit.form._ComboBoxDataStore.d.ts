@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.form{
 export class _ComboBoxDataStore{
 getValue (item:any,attribute:any,defaultValue?:any) : any;

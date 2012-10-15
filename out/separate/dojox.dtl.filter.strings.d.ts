@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.strings{
 export var _fix_ampersands : any;
 export var _strings : Object;

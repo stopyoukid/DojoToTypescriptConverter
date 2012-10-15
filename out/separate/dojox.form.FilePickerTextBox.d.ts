@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.ValidationTextBox.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._HasDropDown.d.ts" />
 module dojox.form{
 export class FilePickerTextBox extends dijit.form.ValidationTextBox {

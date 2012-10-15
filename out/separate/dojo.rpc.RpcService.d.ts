@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.rpc{
 export class RpcService{
 strictArgChecks : Object;

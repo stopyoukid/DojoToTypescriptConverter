@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.defaultStroke{
 export var type : String;
 export var color : String;

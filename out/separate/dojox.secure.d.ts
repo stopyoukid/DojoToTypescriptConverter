@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.secure{
 export var badProps : any;
 export var fromJson : any;

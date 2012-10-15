@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.tag.logic{
 export var IfNode : Object;
 export var IfEqualNode : Object;

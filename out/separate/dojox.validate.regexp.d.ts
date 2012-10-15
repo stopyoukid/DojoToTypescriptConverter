@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.validate.regexp{
 export var emailAddressList : any;
 export function ipAddress (flags?:Object) : String;

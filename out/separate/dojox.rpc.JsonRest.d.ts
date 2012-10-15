@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.rpc.JsonRest{
 export var serviceClass : any;
 export var conflictDateHeader : String;

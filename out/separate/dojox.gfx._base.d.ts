@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx._base{
 export function _getFontMeasurements () : any;
 export function _getCachedFontMeasurements (recalculate:any) : any;

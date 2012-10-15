@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.silverlight.Shape.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.gfx.shape.Text.d.ts" />
 module dojox.gfx.silverlight{
 export class Text extends dojox.gfx.silverlight.Shape {

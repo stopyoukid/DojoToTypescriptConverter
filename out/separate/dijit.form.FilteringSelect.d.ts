@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.MappedTextBox.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.ComboBoxMixin.d.ts" />
 module dijit.form{
 export class FilteringSelect extends dijit.form.MappedTextBox {

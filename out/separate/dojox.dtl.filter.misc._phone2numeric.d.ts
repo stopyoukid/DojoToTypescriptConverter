@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.misc._phone2numeric{
 export var a : number;
 export var b : number;

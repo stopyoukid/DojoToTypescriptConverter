@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp.sasl{
 export class _Base{
 mechanism : Object;

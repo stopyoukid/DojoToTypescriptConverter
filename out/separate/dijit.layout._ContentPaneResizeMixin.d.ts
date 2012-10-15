@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.layout{
 export class _ContentPaneResizeMixin{
 doLayout : bool;

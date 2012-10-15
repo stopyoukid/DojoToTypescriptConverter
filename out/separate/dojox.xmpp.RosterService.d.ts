@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp{
 export class RosterService{
 addRosterItem (jid:any,name:any,groups:any) : any;

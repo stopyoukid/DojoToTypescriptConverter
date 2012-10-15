@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.tree{
 export class _dndContainer{
 current : HTMLElement;

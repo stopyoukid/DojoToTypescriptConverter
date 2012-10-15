@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.window{
 export function getBox () : any;
 export function get (doc:any) : any;

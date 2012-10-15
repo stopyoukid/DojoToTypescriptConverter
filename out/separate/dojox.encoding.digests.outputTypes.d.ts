@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.encoding.digests.outputTypes{
 export var Base64 : number;
 export var Hex : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.scheduler{
 export function zOrder (buffer:any,order:any) : any;
 export function bsp (buffer:any,outline:any) : any;

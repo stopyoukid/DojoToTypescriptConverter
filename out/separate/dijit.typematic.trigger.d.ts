@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.typematic{
 export class trigger{
 _initialDelay : number;

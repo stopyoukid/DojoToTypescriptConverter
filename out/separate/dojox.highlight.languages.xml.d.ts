@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.highlight.languages.xml{
 export var modes : any[];
 export var case_insensitive : Object;

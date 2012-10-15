@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.buddhist{
 export class Date{
 _date : Object;

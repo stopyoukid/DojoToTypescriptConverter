@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.matrix{
 export var identity : any;
 export var flipX : any;

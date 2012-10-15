@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.i18n{
 export function getLocalization () : any;
 export function normalizeLocale (locale?:String) : String;

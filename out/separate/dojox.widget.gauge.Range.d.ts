@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Contained.d.ts" />
 module dojox.widget.gauge{
 export class Range extends dijit._Widget {

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.keys{
 export var BACKSPACE : number;
 export var TAB : number;

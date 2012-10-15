@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Contained.d.ts" />
 module dojox.widget{
 export class _RollingListPane extends dijit.layout.ContentPane {

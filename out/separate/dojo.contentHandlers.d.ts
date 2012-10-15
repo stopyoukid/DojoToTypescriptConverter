@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.contentHandlers{
 export function text (xhr:any) : any;
 export function json (xhr:any) : any;

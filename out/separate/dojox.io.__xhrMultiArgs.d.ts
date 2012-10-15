@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.io{
 export class __xhrMultiArgs{
 url : String;

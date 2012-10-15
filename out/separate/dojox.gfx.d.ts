@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx{
 export var _vectorFontCache : Object;
 export var _svgFontCache : Object;

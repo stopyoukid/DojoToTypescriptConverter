@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.dnd._defaultCreatorNodes{
 export var ul : String;
 export var ol : String;

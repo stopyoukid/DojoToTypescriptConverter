@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.av{
 export class _Media{
 mediaUrl : String;

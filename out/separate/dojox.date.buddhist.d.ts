@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.buddhist{
 export function getDaysInMonth (dateObject:any) : any;
 export function isLeapYear (dateObject:any) : any;

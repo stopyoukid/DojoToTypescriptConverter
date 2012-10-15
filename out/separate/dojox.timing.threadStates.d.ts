@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.timing.threadStates{
 export var UNSTARTED : String;
 export var STOPPED : String;

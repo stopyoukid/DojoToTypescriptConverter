@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.hebrew.locale{
 export function format (dateObject:any,options?:any) : String;
 export function regexp (options?:any) : String;

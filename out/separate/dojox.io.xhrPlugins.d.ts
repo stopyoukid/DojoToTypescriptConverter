@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.io.xhrPlugins{
 export function register () : any;
 export function addProxy (proxyUrl:any) : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.color{
 export class Palette{
 colors : any;

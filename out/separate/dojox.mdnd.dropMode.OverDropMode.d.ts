@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mdnd.dropMode{
 export class OverDropMode{
 _oldXPoint : number;

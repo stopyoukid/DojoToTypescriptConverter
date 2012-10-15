@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.testing{
 export class DocTest{
 errors : any[];

@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.HorizontalSlider.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.form._RangeSliderMixin.d.ts" />
 module dojox.form{
 export class HorizontalRangeSlider extends dijit.form.HorizontalSlider {

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d._creators{
 export function createEdges (edges:any,style:any) : any;
 export function createTriangles (tris:any,style:any) : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.validate.ca{
 export function isPhoneNumber (value:String) : bool;
 export function isProvince (value:any) : bool;

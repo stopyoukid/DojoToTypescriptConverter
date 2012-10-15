@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Contained.d.ts" />
 module dojox.form{
 export class FileUploader extends dijit._Widget {

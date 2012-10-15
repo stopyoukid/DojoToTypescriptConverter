@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.fx{
 export function chain (animations:any) : any;
 export function combine (animations:any) : any;

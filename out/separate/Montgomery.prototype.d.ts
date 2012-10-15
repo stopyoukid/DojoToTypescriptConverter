@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module Montgomery.prototype{
 export var convert : any;
 export var revert : any;

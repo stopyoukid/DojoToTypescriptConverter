@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.timing{
 export class Timer{
 timer : Object;

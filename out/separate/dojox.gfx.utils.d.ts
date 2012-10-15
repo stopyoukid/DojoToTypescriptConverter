@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.utils{
 export var _gfxSvgProxy : Object;
 export var _initSvgSerializerDeferred : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.back{
 export var goBack : any;
 export var goForward : any;

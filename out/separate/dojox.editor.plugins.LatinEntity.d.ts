@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.editor.plugins{
 export class LatinEntity{
 _alias : any;

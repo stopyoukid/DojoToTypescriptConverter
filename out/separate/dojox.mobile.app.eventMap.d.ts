@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mobile.app.eventMap{
 export var onmousedown : String;
 export var mousedown : String;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.io.iframe{
 export var _currentDfd : Object;
 export var _dfdQueue : any[];

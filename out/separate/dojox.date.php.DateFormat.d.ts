@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.php{
 export class DateFormat{
 weekdays : any[];

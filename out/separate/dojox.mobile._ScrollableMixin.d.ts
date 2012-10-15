@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mobile{
 export class _ScrollableMixin{
 fixedHeader : String;

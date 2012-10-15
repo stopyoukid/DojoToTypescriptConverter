@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojo._Url.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojo.Deferred.d.ts" />
 module dojo{
 export var _nodeDataCache : Object;

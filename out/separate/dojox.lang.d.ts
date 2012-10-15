@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang{
 export var lettableWin : any;
 export var ReadOnlyProxy : Object;

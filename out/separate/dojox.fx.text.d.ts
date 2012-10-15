@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.fx.text{
 export function _split (args:Object) : any;
 export function explode (args:Object) : any;

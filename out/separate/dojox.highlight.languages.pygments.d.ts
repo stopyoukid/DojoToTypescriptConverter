@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.highlight.languages.pygments{
 export var _www : Object;
 export var css : Object;

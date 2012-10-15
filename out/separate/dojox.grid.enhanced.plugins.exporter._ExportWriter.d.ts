@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.enhanced.plugins.exporter{
 export class _ExportWriter{
 _getExportDataForCell (rowIndex:any,rowItem:any,cell:any,grid:any) : any;

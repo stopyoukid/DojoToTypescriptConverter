@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.tag.loop{
 export var CycleNode : Object;
 export var IfChangedNode : Object;

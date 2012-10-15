@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.form._FormValueWidget.d.ts" />
 module dojox.form{
 export class ListInput extends dijit.form._FormValueWidget {

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.number{
 export class __FormatOptions{
 pattern : String;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.embed{
 export class Flash{
 minSupported : number;

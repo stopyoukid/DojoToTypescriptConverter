@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.text{
 export var _re : any;
 export function _get (module:any,name:any,errorless:any) : any;

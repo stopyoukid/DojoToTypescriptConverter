@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.highlight.languages{
 export var _all : Object;
 export var _dynamic : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.geo.charting{
 export var _base : Object;
 export function showTooltip (innerHTML:String,gfxObject:any,position?:any) : any;

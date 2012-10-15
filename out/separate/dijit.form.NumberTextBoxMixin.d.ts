@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.form{
 export class NumberTextBoxMixin{
 regExpGen : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module StencilArgs{
 export var container : any;
 export var anchorType : String;

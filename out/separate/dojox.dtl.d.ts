@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl{
 export var TOKEN_BLOCK : number;
 export var TOKEN_VAR : number;

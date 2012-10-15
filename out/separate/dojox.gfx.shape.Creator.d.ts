@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.shape.Creator{
 export function createShape (shape:Object) : any;
 export function createGroup () : any;

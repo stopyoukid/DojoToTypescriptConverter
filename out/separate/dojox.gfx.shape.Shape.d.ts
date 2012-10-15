@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.shape{
 export class Shape{
 shape : Object;

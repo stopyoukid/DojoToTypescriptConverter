@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.tag.loader{
 export var BlockNode : Object;
 export var ExtendsNode : Object;

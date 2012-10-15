@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.html.metrics{
 export var _fontResizeNode : Object;
 export function getFontMeasurements () : any;

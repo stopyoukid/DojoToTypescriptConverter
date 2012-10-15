@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.ui.dom{
 export class Toolbar{
 baseClass : String;

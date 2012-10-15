@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.date.hebrew{
 export class Date{
 _MONTH_LENGTH : any[];

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.data{
 export class CsvStore{
 url : String;

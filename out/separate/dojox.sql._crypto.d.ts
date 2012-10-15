@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.sql._crypto{
 export var _POOL_SIZE : any;
 export function encrypt (plaintext:any,password:any,callback:any) : any;

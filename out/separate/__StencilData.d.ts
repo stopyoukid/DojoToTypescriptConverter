@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module __StencilData{
 export var cx : number;
 export var cy : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.color{
 export var Colorspace : Object;
 export var blend : any;

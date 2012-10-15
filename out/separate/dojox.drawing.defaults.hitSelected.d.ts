@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults.hitSelected{
 export var width : number;
 export var color : String;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit._editor{
 export var html : Object;
 export var range : Object;

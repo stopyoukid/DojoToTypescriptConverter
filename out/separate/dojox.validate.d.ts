@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.validate{
 export var creditCard : Object;
 export var _isInRangeCache : Object;

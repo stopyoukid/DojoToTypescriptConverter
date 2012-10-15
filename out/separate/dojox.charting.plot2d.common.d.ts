@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.charting.plot2d.common{
 export function makeStroke (stroke:any) : any;
 export function augmentColor (target:any,color:any) : any;

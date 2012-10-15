@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.dnd{
 export var _manager : Object;
 export var getViewport : any;

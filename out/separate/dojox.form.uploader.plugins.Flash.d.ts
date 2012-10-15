@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form.uploader.plugins{
 export class Flash{
 swfPath : String;

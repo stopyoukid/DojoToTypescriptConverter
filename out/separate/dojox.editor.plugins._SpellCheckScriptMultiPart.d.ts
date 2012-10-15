@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.editor.plugins{
 export class _SpellCheckScriptMultiPart{
 ACTION_QUERY : Object;

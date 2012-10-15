@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.flash{
 export class Communicator{
 _addExternalInterfaceCallback (methodName:any) : any;

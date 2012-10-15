@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.rpc{
 export var _sync : any;
 export var JsonRPC : Object;

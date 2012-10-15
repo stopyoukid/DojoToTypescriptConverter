@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.validate.us{
 export function isState (value:String,flags?:Object) : bool;
 export function isPhoneNumber (value:String) : bool;

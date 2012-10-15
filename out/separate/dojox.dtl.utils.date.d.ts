@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.utils.date{
 export var _chunks : any[];
 export var _months_ap : any[];

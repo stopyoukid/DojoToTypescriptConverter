@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xml.parser{
 export function parse (str?:String,mimetype?:String) : any;
 export function textContent (node:HTMLElement,text?:String) : String;

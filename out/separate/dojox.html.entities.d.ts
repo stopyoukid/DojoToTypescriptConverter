@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.html.entities{
 export var html : any[];
 export var latin : any[];

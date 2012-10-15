@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp.xmpp{
 export var STREAM_NS : String;
 export var CLIENT_NS : String;

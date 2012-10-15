@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.cometd{
 export var HttpChannels : any;
 export var connectionTypes : Object;

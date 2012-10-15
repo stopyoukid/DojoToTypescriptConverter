@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.html{
 export class _ContentSetter{
 node : any;

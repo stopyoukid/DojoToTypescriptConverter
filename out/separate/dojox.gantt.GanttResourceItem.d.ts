@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gantt{
 export class GanttResourceItem{
 ownerItem : any[];

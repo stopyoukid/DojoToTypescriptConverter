@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form.manager{
 export class _EnableMixin{
 gatherEnableState (names?:Object) : Object;

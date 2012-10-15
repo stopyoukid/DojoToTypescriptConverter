@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.strings._truncate_singlets{
 export var br : Object;
 export var col : Object;

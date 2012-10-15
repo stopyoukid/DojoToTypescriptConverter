@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form.manager{
 export class _ClassMixin{
 gatherClassState (className:String,names?:Object) : Object;

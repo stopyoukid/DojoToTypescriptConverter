@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.ui{
 export class Toolbar{
 padding : number;

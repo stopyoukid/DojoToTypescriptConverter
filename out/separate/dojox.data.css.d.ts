@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.data.css{
 export function findStyleSheets (sheets:any) : any;
 export function findStyleSheet (sheet:any) : any;

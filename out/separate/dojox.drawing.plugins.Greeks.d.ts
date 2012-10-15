@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.plugins{
 export class Greeks{
 _alias : any;

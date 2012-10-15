@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.ui.dom.Pan.setup{
 export var name : String;
 export var tooltip : String;

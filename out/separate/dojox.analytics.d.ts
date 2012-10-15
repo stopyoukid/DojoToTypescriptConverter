@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox{
 export class analytics{
 _data : any[];

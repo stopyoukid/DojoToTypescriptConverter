@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.fx{
 export var Timeline : Object;
 export var _base : Object;

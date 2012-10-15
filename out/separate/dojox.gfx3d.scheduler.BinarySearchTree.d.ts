@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.scheduler{
 export class BinarySearchTree{
 normal : Object;

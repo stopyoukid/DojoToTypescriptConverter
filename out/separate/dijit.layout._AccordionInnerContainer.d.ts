@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._CssStateMixin.d.ts" />
 module dijit.layout{
 export class _AccordionInnerContainer extends dijit._Widget {

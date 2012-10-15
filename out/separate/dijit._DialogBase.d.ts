@@ -1,10 +1,7 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.form._FormMixin.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._DialogMixin.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._CssStateMixin.d.ts" />
 module dijit{
 export class _DialogBase extends dijit._Templated {

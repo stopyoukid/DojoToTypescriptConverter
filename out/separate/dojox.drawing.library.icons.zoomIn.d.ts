@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.library.icons.zoomIn{
 export var type : String;
 export var borderWidth : number;

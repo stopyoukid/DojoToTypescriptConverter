@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.enhanced.plugins.pagination{
 export class _GotoPageDialog{
 pageCount : Object;

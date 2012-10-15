@@ -1,10 +1,7 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Widget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.form._FormMixin.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout._ContentPaneResizeMixin.d.ts" />
 module dijit.form{
 export class Form extends dijit._Widget {

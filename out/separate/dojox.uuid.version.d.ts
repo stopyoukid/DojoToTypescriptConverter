@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.uuid.version{
 export var UNKNOWN : number;
 export var TIME_BASED : number;

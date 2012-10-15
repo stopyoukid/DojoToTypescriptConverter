@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.lighting{
 export function black () : any;
 export function white () : any;

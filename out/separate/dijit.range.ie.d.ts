@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.range.ie{
 export var cachedSelection : Object;
 export function decomposeControlRange (range:any) : any;

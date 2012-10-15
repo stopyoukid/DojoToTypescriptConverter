@@ -1,8 +1,6 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.Button.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._HasDropDown.d.ts" />
 module dijit.form{
 export class DropDownButton extends dijit.form.Button {

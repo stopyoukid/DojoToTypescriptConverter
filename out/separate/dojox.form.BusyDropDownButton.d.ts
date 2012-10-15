@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.DropDownButton.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.form._BusyButtonMixin.d.ts" />
 module dojox.form{
 export class BusyDropDownButton extends dijit.form.DropDownButton {

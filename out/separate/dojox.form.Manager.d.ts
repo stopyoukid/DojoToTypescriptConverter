@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form.manager{
 export function actionAdapter (action:Function) : any;
 export function inspectorAdapter (inspector:Function) : any;

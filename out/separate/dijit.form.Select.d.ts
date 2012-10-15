@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form._FormSelectWidget.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._HasDropDown.d.ts" />
 module dijit.form{
 export class Select extends dijit.form._FormSelectWidget {

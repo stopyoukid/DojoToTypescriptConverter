@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.register{
 export function get (module:String,name:String) : any;
 export function getAttributeTags () : any;

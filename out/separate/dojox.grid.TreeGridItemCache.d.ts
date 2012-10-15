@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid{
 export class TreeGridItemCache{
 unInit : Object;

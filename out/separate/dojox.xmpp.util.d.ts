@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp.util{
 export function xmlEncode (str:any) : any;
 export function encodeJid (jid:any) : any;

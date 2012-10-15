@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing{
 export class Drawing{
 ready : bool;

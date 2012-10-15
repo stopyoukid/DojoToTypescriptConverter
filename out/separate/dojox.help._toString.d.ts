@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.help{
 export class _toString{
 __parameters__ : any[];

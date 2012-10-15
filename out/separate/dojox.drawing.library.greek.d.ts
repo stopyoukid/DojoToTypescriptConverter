@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.library.greek{
 export var alpha : number;
 export var beta : number;

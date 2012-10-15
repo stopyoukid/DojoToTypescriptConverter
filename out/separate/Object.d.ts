@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 interface Object{
 freeze () : any;
 inherited (name?:String,args?:IArguments,newArgs?:Object) : Object;

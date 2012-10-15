@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.enhanced{
 export class _PluginManager{
 _connects : any[];

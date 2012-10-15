@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form{
 export var DropDownSelect : Object;
 export var RangeSlider : Object;

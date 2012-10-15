@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.date.locale{
 export class __FormatOptions{
 selector : String;

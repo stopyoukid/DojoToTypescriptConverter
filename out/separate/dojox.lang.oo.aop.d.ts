@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.oo.aop{
 export var before : Object;
 export var around : Object;

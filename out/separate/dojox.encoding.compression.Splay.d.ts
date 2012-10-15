@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.encoding.compression{
 export class Splay{
 up : Object;

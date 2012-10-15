@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.data.dom{
 export function createDocument (str?:String,mimetype?:String) : any;
 export function textContent (node:HTMLElement,text?:String) : String;

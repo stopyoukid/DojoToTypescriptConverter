@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.fx{
 export class Toggler{
 node : HTMLElement;

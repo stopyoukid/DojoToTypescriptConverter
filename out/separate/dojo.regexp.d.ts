@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.regexp{
 export function escapeString (str:String,except?:String) : any;
 export function buildGroupRE (arr:Object,re:Function,nonCapture?:bool) : String;

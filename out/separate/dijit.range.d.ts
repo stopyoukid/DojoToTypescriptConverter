@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.range{
 export var BlockTagNames : any;
 export var _w3c : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.math.curves{
 export class CenteredArc{
 center : any;

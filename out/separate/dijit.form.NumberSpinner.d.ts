@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form._Spinner.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.NumberTextBoxMixin.d.ts" />
 module dijit.form{
 export class NumberSpinner extends dijit.form._Spinner {

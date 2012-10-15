@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mdnd.adapter{
 export class DndFromDojo{
 _dojoManager : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.defaultEllipse{
 export var type : String;
 export var cx : number;

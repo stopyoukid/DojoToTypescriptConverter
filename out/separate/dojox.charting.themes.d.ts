@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.charting.themes{
 export var Adobebricks : Object;
 export var Algae : Object;

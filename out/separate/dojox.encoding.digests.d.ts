@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.encoding.digests{
 export var _base : Object;
 export function addWords (a:any,b:any) : any;

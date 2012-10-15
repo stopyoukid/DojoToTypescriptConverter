@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.calc{
 export function approx (r:any) : any;
 export function pow (base:number,exponent:number) : any;

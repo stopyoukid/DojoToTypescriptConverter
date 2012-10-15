@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.widget.rotator{
 export class Controller{
 commands : String;

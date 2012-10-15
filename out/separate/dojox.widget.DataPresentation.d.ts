@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.widget{
 export class DataPresentation{
 type : String;

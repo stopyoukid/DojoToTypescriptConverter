@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.util.common{
 export var objects : Object;
 export function radToDeg (n:any) : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.math.matrix{
 export var iDF : number;
 export var ALMOST_ZERO : number;

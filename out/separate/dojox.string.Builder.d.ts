@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.string{
 export class Builder{
 length : number;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.wire{
 export var _defaultWireClass : String;
 export var _base : Object;

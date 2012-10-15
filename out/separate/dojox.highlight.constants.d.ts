@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.highlight.constants{
 export var IDENT_RE : String;
 export var UNDERSCORE_IDENT_RE : String;

@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.ValidationTextBox.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.ComboBoxMixin.d.ts" />
 module dijit.form{
 export class ComboBox extends dijit.form.ValidationTextBox {

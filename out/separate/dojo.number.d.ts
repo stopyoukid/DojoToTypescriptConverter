@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.number{
 export var _numberPatternRE : any;
 export function format (value:number,options?:any) : any;

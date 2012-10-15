@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.oo.general{
 export var augment : Object;
 export var override : Object;

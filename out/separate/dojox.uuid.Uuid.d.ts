@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.uuid{
 export class Uuid{
 _uuidString : Object;

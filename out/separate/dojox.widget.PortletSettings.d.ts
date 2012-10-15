@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout.ContentPane.d.ts" />
 module dojox.widget{
 export class PortletSettings extends dijit._Container {

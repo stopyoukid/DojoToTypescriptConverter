@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.matrix{
 export var identity : any;
 export function translate (a:number,b:number,c:number) : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp.chat{
 export var CHAT_STATE_NS : String;
 export var ACTIVE_STATE : String;

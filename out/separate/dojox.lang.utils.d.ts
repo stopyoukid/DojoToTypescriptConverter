@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.utils{
 export function merge (object:Object,mixin:Object) : any;
 export function coerceType (target:Object,source:Object) : any;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.store{
 export class DataStore{
 target : String;

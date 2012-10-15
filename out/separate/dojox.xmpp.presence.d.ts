@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.xmpp.presence{
 export var UPDATE : number;
 export var SUBSCRIPTION_REQUEST : number;

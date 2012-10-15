@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx.defaultVectorText{
 export var type : String;
 export var x : number;

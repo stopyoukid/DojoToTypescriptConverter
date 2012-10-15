@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.form.Select.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.form._SelectStackMixin.d.ts" />
 module dojox.form{
 export class DropDownStack extends dijit.form.Select {

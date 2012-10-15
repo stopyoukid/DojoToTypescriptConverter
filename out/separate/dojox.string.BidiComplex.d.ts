@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.string.BidiComplex{
 export function attachInput (field:HTMLElement,pattern:String) : any;
 export function createDisplayString (str:String,pattern:String) : any;

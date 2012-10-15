@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.css3.fx{
 export function puff (args:any) : any;
 export function expand (args:any) : any;

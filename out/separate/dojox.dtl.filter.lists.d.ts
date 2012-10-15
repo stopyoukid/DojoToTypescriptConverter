@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.lists{
 export function _dictsort (a:any,b:any) : any;
 export function dictsort (value:any,arg:any) : any;

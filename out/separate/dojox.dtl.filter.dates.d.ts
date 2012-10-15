@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.filter.dates{
 export function _toDate (value:any) : any;
 export function date (value:any,arg:any) : any;

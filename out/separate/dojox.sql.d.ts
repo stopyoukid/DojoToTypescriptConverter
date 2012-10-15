@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.sql{
 export var dbName : Object;
 export var debug : any;

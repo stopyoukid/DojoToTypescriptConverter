@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.oo{
 export function makeDecorator (decorator:Function) : any;
 export function makeDecorator (decorator:Object) : any;

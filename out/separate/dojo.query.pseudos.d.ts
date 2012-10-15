@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.query.pseudos{
 export function has (name:any,condition:any) : any;
 export function visible (name:any,condition:any) : any;

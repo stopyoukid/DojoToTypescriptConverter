@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.tag.date{
 export class NowNode{
 _format : any;

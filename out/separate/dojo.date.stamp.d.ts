@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.date.stamp{
 export var _isoRegExp : any;
 export function fromISOString (formattedString:String,defaultTime?:number) : any;

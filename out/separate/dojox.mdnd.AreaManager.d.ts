@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mdnd{
 export class AreaManager{
 autoRefresh : bool;

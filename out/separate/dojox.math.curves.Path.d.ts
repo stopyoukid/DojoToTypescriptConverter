@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.math.curves{
 export class Path{
 add (curve:any,weight:any) : any;

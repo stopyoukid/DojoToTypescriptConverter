@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.math.random{
 export class Secure{
 state : Object;

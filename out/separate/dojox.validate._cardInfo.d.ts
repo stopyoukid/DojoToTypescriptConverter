@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.validate._cardInfo{
 export var mc : any;
 export var ec : any;

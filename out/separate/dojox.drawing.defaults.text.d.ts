@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults.text{
 export var minWidth : number;
 export var deleteEmptyCreate : Object;

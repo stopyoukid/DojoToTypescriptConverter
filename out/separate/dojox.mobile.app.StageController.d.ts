@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.mobile.app{
 export class StageController{
 scenes : any[];

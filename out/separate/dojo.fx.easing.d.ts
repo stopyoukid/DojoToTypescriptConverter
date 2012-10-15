@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.fx.easing{
 export function linear (n?:number) : any;
 export function quadIn (n?:number) : any;

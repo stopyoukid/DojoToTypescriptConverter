@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo.data{
 export class ObjectStore{
 objectStore : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.gfx3d.matrix{
 export class Matrix3D{
 xx : number;

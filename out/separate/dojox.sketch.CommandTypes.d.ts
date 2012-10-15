@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.sketch.CommandTypes{
 export var Create : String;
 export var Move : String;

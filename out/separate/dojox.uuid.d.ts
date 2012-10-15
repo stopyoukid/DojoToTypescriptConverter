@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.uuid{
 export var NIL_UUID : String;
 export var _ourVariantLookupTable : any;

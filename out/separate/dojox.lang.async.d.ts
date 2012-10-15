@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.lang.async{
 export function seq (x:any) : any;
 export function par (x:any) : any;

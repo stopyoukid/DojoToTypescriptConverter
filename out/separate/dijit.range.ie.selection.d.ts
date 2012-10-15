@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit.range.ie{
 export class selection{
 _ranges : any[];

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.cometd{
 export class longPollTransportJsonEncoded{
 _connectionType : String;

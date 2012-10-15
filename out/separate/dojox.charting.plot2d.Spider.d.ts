@@ -1,6 +1,5 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dojox.charting.Element.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dojox.charting.plot2d._PlotEvents.d.ts" />
 module dojox.charting.plot2d{
 export class Spider extends dojox.charting.Element {

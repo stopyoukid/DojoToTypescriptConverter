@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.math{
 export var _base : Object;
 export function toRadians (n:number) : number;

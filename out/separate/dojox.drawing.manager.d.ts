@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.manager{
 export var Anchors : Object;
 export var Anchor : Object;

@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dijit{
 export class _HasDropDown{
 _buttonNode : HTMLElement;

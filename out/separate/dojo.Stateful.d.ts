@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojo{
 export class Stateful{
 postscript (mixin:any) : any;

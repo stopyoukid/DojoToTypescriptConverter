@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.collections{
 export class Iterator{
 element : Object;

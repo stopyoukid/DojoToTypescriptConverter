@@ -1,10 +1,7 @@
 /// <reference path="Object.d.ts" />
 /// <reference path="dijit.layout.ContentPane.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Templated.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Contained.d.ts" />
-/// <reference path="Object.d.ts" />
 /// <reference path="dijit._Container.d.ts" />
 module dojox.layout{
 export class ExpandoPane extends dijit.layout.ContentPane {

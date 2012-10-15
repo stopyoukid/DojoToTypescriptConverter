@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.dtl.contrib.dijit{
 export var widgetsInTemplate : Object;
 export var AttachNode : Object;

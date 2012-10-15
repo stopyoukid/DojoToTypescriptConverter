@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.form.manager{
 export class _NodeMixin{
 formNodes : Object;

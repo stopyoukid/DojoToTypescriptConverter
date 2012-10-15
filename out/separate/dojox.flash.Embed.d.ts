@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.flash{
 export class Embed{
 _visible : Object;

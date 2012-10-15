@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.grid.enhanced.plugins.filter{
 export var FilterLayer : Object;
 export var _DataExprs : Object;

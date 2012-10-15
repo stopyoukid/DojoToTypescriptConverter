@@ -1,3 +1,4 @@
+/// <reference path="Object.d.ts" />
 module dojox.drawing.defaults.textMode.create{
 export var width : number;
 export var style : String;
