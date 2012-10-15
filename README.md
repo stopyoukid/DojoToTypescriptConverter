@@ -8,9 +8,16 @@ TypeScript - npm install typescript -g
 ```
 
 ###Generating dojo.d.ts
+Output to a single file: 
 ``` 
 tsc dojoDocConverter.ts
-node dojoDocConverter.js api.json dojo.d.ts
+node dojoDocConverter.js api.json [OUTPUT_FILE_NAME]
+```
+
+Output to multiple files by class name: 
+``` 
+tsc dojoDocConverter.ts
+node dojoDocConverter.js api.json [OUTPUT_DIRECTORY]
 ```
 
 ###Usage
@@ -19,6 +26,5 @@ node dojoDocConverter.js api.json dojo.d.ts
 ```
 
 ###Plans
-*   Fix inheritance
 *   Add in skipped classes that use keywords as property names.
 *   Thorough testing

@@ -1,0 +1,2 @@
+module dojox.io.proxy{
+}

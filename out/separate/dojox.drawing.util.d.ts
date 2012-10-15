@@ -1,0 +1,2 @@
+module dojox.drawing.util{
+}

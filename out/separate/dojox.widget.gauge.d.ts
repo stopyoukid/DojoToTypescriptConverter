@@ -1,0 +1,2 @@
+module dojox.widget.gauge{
+}

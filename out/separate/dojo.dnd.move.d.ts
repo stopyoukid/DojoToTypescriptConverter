@@ -1,0 +1,2 @@
+module dojo.dnd.move{
+}

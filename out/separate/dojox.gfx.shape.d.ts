@@ -1,0 +1,2 @@
+module dojox.gfx.shape{
+}

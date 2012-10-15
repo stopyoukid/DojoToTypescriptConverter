@@ -1,0 +1,2 @@
+module dojox.charting.scaler{
+}
